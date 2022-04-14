@@ -2,7 +2,7 @@
 open Ast
 %}
 
-%token EOF
+%token COLON EOF
 %token<string> ID 
 
 %start<Ast.expression> input
@@ -13,4 +13,4 @@ open Ast
 input: c = expression EOF { c }
 
 expression:
-x = ID  { Var x }
+x = ID COLON ID ID ID{ Var x }

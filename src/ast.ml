@@ -1,16 +1,24 @@
-type expression =
-  | Var of string
-  | True
-  | False
-  | Or of expression * expression
-  | And of expression * expression
+type stack =
+  | Empty
+  | Letters of char list
 
-let rec as_string = function
-  | Var x -> x
-  | True -> "true"
-  | False -> "false"
-  | Or (l, r) -> apply "\\/" l r
-  | And (l, r) -> apply "/\\" l r
+type charactercouldbeempty = 
+  | Empty
+  | Letter of char
 
-and apply op l r = 
-  "(" ^ as_string l ^ ") " ^ op ^ " (" ^ as_string r ^ ")"
+type transition = string * string * string * string * string list
+
+(*type translist = transition *)
+
+type transitions = transition list (*translist list*)
+
+type initials = string
+
+type declarationsinputs = string list
+
+type declarations = declarationsinputs * declarationsinputs * declarationsinputs * initials * initials
+
+type automate = declarations * transitions
+
+(*let as_string (automate: automate) = *)
+  
