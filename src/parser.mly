@@ -9,8 +9,8 @@ open Ast
 %type<Ast.declarations> declarations
 %type<Ast.declarationsinputs> symbols states
 %type<Ast.initials> initialstate initialstack
-(*%type<Ast.transitions> transitions
-%type<Ast.transition> transition*)
+%type<Ast.transitions> transitions
+%type<Ast.transition> transition
 
 
 %%
@@ -18,7 +18,7 @@ open Ast
 input: c = automate EOF { c }
 
 automate:
-a = declarations (*b = transitions*) {a(*, b*)}
+a = declarations b = transitions {a, b}
 
 declarations:
 a = symbols b = symbols c = states d = initialstate e = initialstack {a, b, c, d, e}
@@ -35,11 +35,11 @@ ID ID COLON a = ID {a}
 initialstack:
 ID ID ID COLON a = ID {a}
 
-(*transitions:
+transitions:
 ID COLON a = list(transition) {a}
 
 transition:
-LPAREN a = ID b = ID c = ID d = ID e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}*)
+LPAREN a = ID COMMA b = ID COMMA c = ID COMMA d = ID COMMA e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}
 
 
 
