@@ -7,9 +7,9 @@ open Ast
 
 %start<Ast.automate> input
 %type<Ast.declarations> declarations
-%type<Ast.declarationsinputs> symbols states
-%type<Ast.initials> initialstate initialstack
-%type<Ast.transitions> transitions
+%type<string list> symbols states
+%type<string> initialstate initialstack
+%type<Ast.transition list> transitions
 %type<Ast.transition> transition
 
 
@@ -39,7 +39,7 @@ transitions:
 ID COLON a = list(transition) {a}
 
 transition:
-LPAREN a = ID COMMA b = ID COMMA c = ID COMMA d = ID COMMA e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}
+LPAREN a = ID COMMA b = list(ID) COMMA c = ID COMMA d = ID COMMA e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}
 
 
 

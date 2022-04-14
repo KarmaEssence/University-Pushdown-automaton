@@ -1,65 +1,41 @@
-type stack =
-  | Empty
-  | Letters of char list
+type transition = string * string list * string * string * string list
 
-type charactercouldbeempty = 
-  | Empty
-  | Letter of char
+type declarations = string list * string list * string list * string * string
 
-type transition = string * string * string * string * string list
+type automate = declarations * transition list 
 
-(*type translist = transition *)
-
-type transitions = transition list (*translist list*)
-
-type initials = string
-
-type declarationsinputs = string list
-
-type declarations = declarationsinputs * declarationsinputs * declarationsinputs * initials * initials
-
-type automate = declarations * transitions
-
-let rec print_declarationsinputs (list : string list) : unit =
+let rec print_stringlist (list : string list) (flag : int): unit =
   match list with 
-  | [] -> print_string "\n"
+  | [] -> 
+    if flag == 0 then
+      print_string "\n"
+    else
+      print_string ""  
   | element :: sublist -> 
       print_string (element ^ " ");
-      print_declarationsinputs sublist
-  ;; 
-
-let rec print_stringlist (list : string list) : unit =
-  match list with 
-  | [] -> print_string "\n"
-  | element :: sublist -> 
-      print_string (element ^ " ");
-      print_declarationsinputs sublist
+      print_stringlist sublist flag
   ;;  
 
-let rec print_translist (translist: transition list) : unit = 
-  match translist with
+let rec print_transitions (transitions: transition list) : unit = 
+  match transitions with
   | [] -> print_string "\n"
   | (a, b, c, d, e) :: sublist ->
-    print_string (a ^ " " ^ b ^ " " ^ c ^ " " ^ d ^ " ");
-    print_stringlist e;
-    print_translist sublist
-  ;;  
-  
-let print_transitions (transitions: transitions) : unit = 
-  match transitions with
-  | (translist) ->
-    print_translist translist
+    print_string (a ^ " ");
+    print_stringlist b 1;
+    print_string (c ^ " " ^ d ^ " ");
+    print_stringlist e 0;
+    print_transitions sublist
   ;;  
 
 let print_declarations (declarations: declarations) : unit = 
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
     print_string "Input symbols : ";
-    print_declarationsinputs input_symbols;
+    print_stringlist input_symbols 0; 
     print_string "Stack symbols : ";
-    print_declarationsinputs stack_symbols;
+    print_stringlist stack_symbols 0;
     print_string "States : ";
-    print_declarationsinputs states;
+    print_stringlist states 0;
     print_string ("Initial symbols : " ^ initial_state ^ "\n");
     print_string ("Initial stack : " ^ initial_stack ^ "\n")
 
