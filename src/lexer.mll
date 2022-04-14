@@ -3,7 +3,7 @@ open Parser
 }
 
 let layout = [ ' ' '\t' '\n' ]
-let ident_char = [ 'a'- 'z' ]
+let ident_char = [ 'a'- 'z''A'-'Z''0'-'9' ]
 
 rule main = parse
   | layout		  { main lexbuf }

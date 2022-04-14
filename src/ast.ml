@@ -18,7 +18,36 @@ type declarationsinputs = string list
 
 type declarations = declarationsinputs * declarationsinputs * declarationsinputs * initials * initials
 
-type automate = declarations * transitions
+type automate = declarations (** transitions*)
 
-(*let as_string (automate: automate) = *)
+let rec print_declarationsinputs (list : string list) : unit =
+  match list with 
+  | [] -> print_string "\n"
+  | element :: sublist -> 
+      print_string (element ^ " ");
+      print_declarationsinputs sublist
+  ;;    
+
+
+
+let print_declarations (declarations: declarations) : unit = 
+  match declarations with
+  | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
+    print_string "Input symbols : ";
+    print_declarationsinputs input_symbols;
+    print_string "Stack symbols : ";
+    print_declarationsinputs stack_symbols;
+    print_string "States : ";
+    print_declarationsinputs states;
+    print_string ("Initial symbols : " ^ initial_state ^ "\n");
+    print_string ("Initial stack : " ^ initial_stack ^ "\n")
+
+
+let print_automate (ast: automate) : unit =
+  match ast with
+  | (declarations(*, transitions*)) ->
+    print_declarations declarations
+
+
+
   
