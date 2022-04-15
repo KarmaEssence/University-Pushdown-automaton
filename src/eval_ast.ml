@@ -23,5 +23,9 @@ let eval_automate (ast: automate) (word: string): unit =
   (*print_string (word ^ "\n");
   print_word list_of_word*)
   let map = NameTable.add "word" list_of_word map in
-  (*let map = NameTable.add "initial state"*)
-  print_word (NameTable.find "word" map) 
+  let map = NameTable.add "states" [getInitials ast 0] map in
+  let map = NameTable.add "stacks" [getInitials ast 1] map in
+  print_word (NameTable.find "word" map);
+  print_word (NameTable.find "states" map);
+  (*print_string ((NameTable.find "current_state" map) ^ "\n");*)
+  print_word (NameTable.find "stacks" map)
