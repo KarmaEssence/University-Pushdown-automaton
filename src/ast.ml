@@ -16,5 +16,9 @@ let getInitials (automate: automate) (flag: int): string =
       match declarations with
       | (_, _, _, _, initial_stack) -> initial_stack
 
+let getTransitionsList (automate: automate): transition list = 
+  match automate with
+  | (_, transitions) -> transitions      
+
 
   
