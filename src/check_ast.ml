@@ -26,38 +26,35 @@ let rec check_transitions (transitions: transition list) (map: string list NameT
         else
           let key = " " in
           let map = NameTable.add key [value] map in
-          check_transitions subtransitions map  
-
-      (*if NameTable.mem key map then
-        let list_of_word = NameTable.find key map in
-        if List.mem (letter) list_of_word then
-          let error_code = 1 in
-          print_string "L’automate doit être déterministe.\n";
-          exit error_code
-        else
-          let list_of_word = List.rev(letter :: List.rev list_of_word) in
-          let map = NameTable.add key list_of_word map in
           check_transitions subtransitions map
-      else
-        let map = NameTable.add key [letter] map in
-        check_transitions subtransitions map*)    
 
-    
+let string_list_has_good_format (list: string list): bool = List.for_all (fun x -> String.length x = 1) list
+
+let declarations_has_good_format (input_symbols: string list) (stack_symbols: string list) (states: string list) (initial_state: string) (initial_stack: string): bool = 
+  string_list_has_good_format input_symbols && string_list_has_good_format stack_symbols 
+  && string_list_has_good_format states && String.length initial_state = 1 
+  && String.length initial_stack = 1
+
 
 let check_declarations (declarations: declarations): unit = 
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
-    if List.mem initial_state states then
-      if List.mem initial_stack stack_symbols then
-        ()
+    if declarations_has_good_format input_symbols stack_symbols states initial_state initial_stack then
+      if List.mem initial_state states then
+        if List.mem initial_stack stack_symbols then
+          ()
+        else
+          let error_code = 1 in
+          print_string "Erreur : Le symbole de pile initial doit être dans l’ensemble des symboles de pile.\n";
+          exit error_code  
       else
         let error_code = 1 in
-        print_string "Erreur : Le symbole de pile initial doit être dans l’ensemble des symboles de pile.\n";
-        exit error_code  
+        print_string "Erreur : L'état initial doit être un élément de l’ensemble des états.\n";
+        exit error_code
     else
       let error_code = 1 in
-      print_string "Erreur : L'état initial doit être un élément de l’ensemble des états.\n";
-      exit error_code
+      print_string "Erreur : Mauvais format de fichier.\n"; 
+      exit error_code   
 
 let check_automate (automate: automate): unit = 
   match automate with
