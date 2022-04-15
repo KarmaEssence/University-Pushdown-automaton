@@ -50,11 +50,13 @@ let rec test_automate_with_char (transitions: transition list) (map: string list
     | (current_state, listletter_toread, stack_topop, state_wanted, list_stack_topush) ->
       let list_of_states = NameTable.find "states" map in
       let list_of_stacks = NameTable.find "stacks" map in
-      let letter_toread = List.nth listletter_toread 0 in
+      (*let letter_toread =  List.nth listletter_toread 0 in*)
       if (List.nth list_of_states ((List.length list_of_states)-1)) = current_state &&
           (List.nth list_of_stacks ((List.length list_of_stacks)-1)) = stack_topop &&
-          element = letter_toread then
-          
+          ((List.length listletter_toread = 0  && element = " ") 
+          || (element = List.nth listletter_toread 0)) then
+            
+
           let list_of_states = List.rev(state_wanted :: List.rev list_of_states) in
           if List.length list_stack_topush > 0 then
             let list_of_stacks = list_of_stacks @ list_stack_topush in
@@ -87,6 +89,7 @@ let tranform_string_tolist (word: string): string list =
     List.rev (tranform_string_tolist_rec word []) *)
 
 let eval_automate (automate: automate) (word: string): unit = 
+  (*print_int (String.length word);*)
   let map = NameTable.empty in
   (*let list_of_word = tranform_string_tolist word in
   print_string (word ^ "\n");
