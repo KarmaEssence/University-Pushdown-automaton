@@ -3,7 +3,7 @@ MENHIR=menhir
 OCAMLC=ocamlc
 OCAMLLEX=ocamllex
 
-SOURCES = ast.ml print_ast.ml parser.ml lexer.ml main.ml
+SOURCES = ast.ml print_ast.ml eval_ast.ml parser.ml lexer.ml main.ml
 
 OBJECTS = $(SOURCES:.ml=.cmo)
 
@@ -11,7 +11,7 @@ OBJECTS = $(SOURCES:.ml=.cmo)
 
 all: parser
 
-parser: ast.cmo print_ast.cmo parser.cmi parser.cmo lexer.cmo main.cmo 
+parser: ast.cmo print_ast.cmo eval_ast.cmo parser.cmi parser.cmo lexer.cmo main.cmo 
 	$(OCAMLC) -o $@ $(OBJECTS)
 
 %.cmo: %.ml
@@ -37,4 +37,4 @@ clean:
 
 parser.cmo: ast.cmo parser.cmi
 lexer.cmo: parser.cmo
-main.cmo: parser.cmo lexer.cmo print_ast.cmo
+main.cmo: parser.cmo lexer.cmo
