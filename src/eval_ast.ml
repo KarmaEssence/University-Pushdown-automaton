@@ -41,7 +41,7 @@ let rec test_automate_with_char (transitions: transition list) (map: string list
   | [] -> 
     if String.length element > 0 then
       let error_code = 1 in
-      print_string ("Erreur: l'élément " ^ element ^ " ne peut pas etre lu\n");
+      print_string ("Erreur: Aucune transition n'est applicable pour la lettre " ^ element ^ "\n");
       exit error_code
     else
       map  
@@ -59,8 +59,11 @@ let rec test_automate_with_char (transitions: transition list) (map: string list
 
           let list_of_states = List.rev(state_wanted :: List.rev list_of_states) in
           if List.length list_stack_topush > 0 then
-            let list_of_stacks = list_of_stacks @ list_stack_topush in
-            update_map list_of_states list_of_stacks map
+            if List.length list_stack_topush > 1 then
+              let list_of_stacks = list_of_stacks @ list_stack_topush in
+              update_map list_of_states list_of_stacks map
+            else 
+              update_map list_of_states list_of_stacks map  
           else  
             let list_of_stacks = list_without_last_word_clean list_of_stacks in
             update_map list_of_states list_of_stacks map
@@ -72,11 +75,17 @@ let rec test_automate_with_char (transitions: transition list) (map: string list
 let rec test_automate_with_word (automate: automate) (map: string list NameTable.t) (word: string): unit = 
   print_actual_position word map;
   if String.length word > 0 then
-    let subword = String.sub word 1 ((String.length word)-1) in
-    let map = test_automate_with_char (getTransitionsList automate) map (String.sub word 0 1) in
-    test_automate_with_word automate map subword
+    if List.length (NameTable.find "stacks" map) < 1 then
+      print_string "Erreur: La pile est vide sans que l’entrée soit épuisée.\n" 
+    else
+      let subword = String.sub word 1 ((String.length word)-1) in
+      let map = test_automate_with_char (getTransitionsList automate) map (String.sub word 0 1) in
+      test_automate_with_word automate map subword
   else
-    print_string "Analyse du mot réussie !\n" 
+    if List.length (NameTable.find "stacks" map) > 0 then
+      print_string "Erreur: L'entrée est épuisée sans que la pile soit vide\n" 
+    else   
+      print_string "Analyse du mot réussie !\n" 
 
 (*let rec tranform_string_tolist_rec (word: string) (list: string list): string list = 
   if String.length word > 0 then
