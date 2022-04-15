@@ -21,7 +21,7 @@ let rec test_automate_with_char (transitions: transition list) (map: string list
   | [] -> 
     if String.length element > 0 then
       let error_code = 1 in
-      print_string ("Erreur: Aucune transition n'est applicable pour la lettre " ^ element ^ "\n");
+      print_string ("Erreur: Aucune transition n'est applicable pour la lettre " ^ element ^ ".\n");
       exit error_code
     else
       map  
@@ -62,7 +62,7 @@ let rec test_automate_with_word (automate: automate) (map: string list NameTable
       test_automate_with_word automate map subword
   else
     if List.length (NameTable.find "stacks" map) > 0 then
-      print_string "Erreur: L'entrée est épuisée sans que la pile soit vide\n" 
+      print_string "Erreur: L'entrée est épuisée sans que la pile soit vide.\n" 
     else   
       print_string "Analyse du mot réussie !\n"
 

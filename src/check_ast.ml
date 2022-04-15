@@ -1,0 +1,49 @@
+open Ast
+
+let rec check_transitions (transitions: transition list) (map: string list NameTable.t): unit = 
+  match transitions with
+  | [] -> print_string "\n"
+  | transition :: subtransitions ->
+    match transition with
+    | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) ->
+      let key = current_state ^ wanted_state in
+      let letter = List.hd listletter_toread in
+      
+      (*if NameTable.mem key map then
+        let list_of_word = NameTable.find key map in
+        if List.mem (letter) list_of_word then
+          let error_code = 1 in
+          print_string "L’automate doit être déterministe.\n";
+          exit error_code
+        else
+          let list_of_word = List.rev(letter :: List.rev list_of_word) in
+          let map = NameTable.add key list_of_word map in
+          check_transitions subtransitions map
+      else
+        let map = NameTable.add key [letter] map in
+        check_transitions subtransitions map*)    
+
+    
+
+let check_declarations (declarations: declarations): unit = 
+  match declarations with
+  | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
+    if List.mem initial_state states then
+      if List.mem initial_stack stack_symbols then
+        ()
+      else
+        let error_code = 1 in
+        print_string "Erreur : Le symbole de pile initial doit être dans l’ensemble des symboles de pile.\n";
+        exit error_code  
+    else
+      let error_code = 1 in
+      print_string "Erreur : L'état initial doit être un élément de l’ensemble des états.\n";
+      exit error_code
+
+let check_automate (automate: automate): unit = 
+  match automate with
+  | (declarations, transitions) ->
+    check_declarations declarations;
+    let map = NameTable.empty in
+    check_transitions transitions map 
+

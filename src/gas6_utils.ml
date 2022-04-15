@@ -20,4 +20,4 @@ let rec list_without_last_word (list_of_word : string list) (iteration : int) (r
         
 let list_without_last_word_clean (list_of_word : string list): string list = 
   let list = list_without_last_word list_of_word 0 [] in
-  List.rev list  
+  List.rev list    

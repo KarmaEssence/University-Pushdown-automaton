@@ -15,6 +15,6 @@ let usage () =
 
 let _ =
   match Sys.argv with
-  | [|_;"-eval";argument|] -> Eval_ast.eval_automate ast argument
-  | [|_;"-print"|] -> Print_ast.print_automate ast   
+  | [|_;"-eval";argument|] -> Check_ast.check_automate ast; Eval_ast.eval_automate ast argument
+  | [|_;"-print"|] -> Check_ast.check_automate ast; Print_ast.print_automate ast   
   | _ -> usage ()
