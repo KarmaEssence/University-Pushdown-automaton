@@ -6,9 +6,28 @@ let rec check_transitions (transitions: transition list) (map: string list NameT
   | transition :: subtransitions ->
     match transition with
     | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) ->
-      let key = current_state ^ wanted_state in
-      let letter = List.hd listletter_toread in
-      
+      let value = current_state ^ wanted_state in
+      if List.length listletter_toread > 0 && (NameTable.mem (List.hd listletter_toread) map) then
+        let key = List.hd listletter_toread in
+        let list_of_word = NameTable.find key map in
+        if List.for_all (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && x <> value) list_of_word then
+          let error_code = 1 in
+          print_string "L’automate doit être déterministe.\n";
+          exit error_code
+        else
+          let list_of_word = List.rev(value :: List.rev list_of_word) in
+          let map = NameTable.add key list_of_word map in
+          check_transitions subtransitions map
+      else
+        if List.length listletter_toread > 0 then
+          let key = List.hd listletter_toread in
+          let map = NameTable.add key [value] map in
+          check_transitions subtransitions map
+        else
+          let key = " " in
+          let map = NameTable.add key [value] map in
+          check_transitions subtransitions map  
+
       (*if NameTable.mem key map then
         let list_of_word = NameTable.find key map in
         if List.mem (letter) list_of_word then
