@@ -30,12 +30,15 @@ let rec test_automate_with_char (transitions: transition list) (map: string list
     | (current_state, listletter_toread, stack_topop, state_wanted, list_stack_topush) ->
       let list_of_states = NameTable.find "states" map in
       let list_of_stacks = NameTable.find "stacks" map in
+      (*print_string "\nstate : ";
+      print_int (List.length list_of_states);
+      print_string "\n--\nstack : ";
+      print_int (List.length listletter_toread);*)
       if (List.nth list_of_states ((List.length list_of_states)-1)) = current_state &&
-          (List.nth list_of_stacks ((List.length list_of_stacks)-1)) = stack_topop &&
-          ((List.length listletter_toread = 0  && element = " ") 
-          || (element = List.nth listletter_toread 0)) then
+         (List.nth list_of_stacks ((List.length list_of_stacks)-1)) = stack_topop && 
+         (List.length listletter_toread = 0  && element = " ") || 
+         (List.length listletter_toread > 0 && element =  List.hd listletter_toread) then
             
-
           let list_of_states = List.rev(state_wanted :: List.rev list_of_states) in
           if List.length list_stack_topush > 0 then
             if List.length list_stack_topush > 1 then
