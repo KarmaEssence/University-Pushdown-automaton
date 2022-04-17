@@ -9,9 +9,9 @@ OBJECTS = $(SOURCES:.ml=.cmo)
 
 .PHONY: clean all 
 
-all: parser
+all: main
 
-parser: ast.cmo gas6_utils.cmo check_ast.cmi check_ast.cmo print_ast.cmi print_ast.cmo eval_ast.cmi eval_ast.cmo parser.cmi parser.cmo lexer.cmo main.cmo 
+main: ast.cmo gas6_utils.cmo check_ast.cmi check_ast.cmo print_ast.cmi print_ast.cmo eval_ast.cmi eval_ast.cmo parser.cmi parser.cmo lexer.cmo main.cmo 
 	$(OCAMLC) -o $@ $(OBJECTS)
 
 %.cmo: %.ml
@@ -32,7 +32,7 @@ parser.mly: ast.ml
 lexer.mll: parser.ml
 
 clean:
-	rm -fr parser.mli parser.ml lexer.ml *.cmo parser *.cmi *~ *.automaton *.conflicts
+	rm -fr parser.mli parser.ml lexer.ml *.cmo main *.cmi *~ *.automaton *.conflicts
 
 
 parser.cmo: ast.cmo parser.cmi
