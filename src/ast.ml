@@ -1,12 +1,13 @@
-type transition = string * string list * string * string * string list
+type transition = char * char list * char * char * char list
 
-type declarations = string list * string list * string list * string * string
+type declarations = char list * char list * char list * char * char
 
 type automate = declarations * transition list 
 
-module NameTable = Map.Make(String)
+module NameTable = Map.Make(Char)
+module StringNameTable = Map.Make(String)
 
-let getInitials (automate: automate) (flag: int): string = 
+let getInitials (automate: automate) (flag: int): char = 
   match automate with
   | (declarations, _) ->
     if flag == 0 then

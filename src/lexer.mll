@@ -12,6 +12,6 @@ rule main = parse
   | ','         { COMMA }
   | ':'         { COLON }
   | ';'         { SEMICOLON }
-  | ident_char+	{ ID (Lexing.lexeme lexbuf) }
+  | ident_char+	{ ID (Lexing.lexeme_char lexbuf 0) }
   | eof			{ EOF }
   | _			{ failwith "unexpected character" }

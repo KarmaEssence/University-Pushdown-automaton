@@ -3,12 +3,12 @@ open Ast
 %}
 
 %token LPAREN RPAREN COMMA COLON SEMICOLON EOF
-%token<string> ID 
+%token<char> ID 
 
 %start<Ast.automate> input
 %type<Ast.declarations> declarations
-%type<string list> symbols states
-%type<string> initialstate initialstack
+%type<char list> symbols states
+%type<char> initialstate initialstack
 %type<Ast.transition list> transitions
 %type<Ast.transition> transition
 
