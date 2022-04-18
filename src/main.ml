@@ -1,10 +1,15 @@
 open Ast
 
 let open_automaton_file (filename: string) : automate = 
-  let lexbuf = Lexing.from_channel (open_in filename) in
-  let automaton = Parser.input Lexer.main lexbuf in 
-  Check_ast.check_automate automaton;
-  automaton
+  try
+    let lexbuf = Lexing.from_channel (open_in filename) in
+    let automaton = Parser.input Lexer.main lexbuf in 
+    Check_ast.check_automate automaton;
+    automaton
+
+  with Sys_error _ ->
+    print_string (filename ^ ": no such file\n"); 
+    exit 1
 
 let usage () =
   print_string "\n";
