@@ -45,5 +45,5 @@ let _ =
     Print_ast.print_automate automate   
   | [|_;"-print--phase-3";filename|] ->  
     let program = open_program_file filename in
-    print_string "test"   
+    Print_prog.print_program program   
   | _ -> usage ()

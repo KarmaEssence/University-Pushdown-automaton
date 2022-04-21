@@ -1,16 +1,6 @@
+open Prog
 open Ast
-open Gas6_utils 
-
-let rec print_transitions (transitions: transition list) : unit = 
-  match transitions with
-  | [] -> print_string "\n"
-  | (a, b, c, d, e) :: sublist ->
-    print_string (Char.escaped a ^ " ");
-    print_stringlist b 1;
-    print_string (Char.escaped c ^ " " ^ Char.escaped d ^ " ");
-    print_stringlist e 0;
-    print_transitions sublist
-  ;;  
+open Gas6_utils
 
 let print_declarations (declarations: declarations) : unit = 
   match declarations with
@@ -24,11 +14,10 @@ let print_declarations (declarations: declarations) : unit =
     print_string ("Initial symbols : " ^ Char.escaped initial_state ^ "\n");
     print_string ("Initial stack : " ^ Char.escaped initial_stack ^ "\n\n")
 
-  ;;  
+  ;;
 
-let print_automate (automate: automate) : unit =
-  match automate with
+let print_program (program: program) : unit = 
+  match program with
   | (declarations, transitions) ->
-    print_declarations declarations;
-    print_string "transitions :\n\n";
-    print_transitions transitions   
+      print_declarations declarations;
+      print_string "transitions :\n\n"; 
