@@ -1,5 +1,5 @@
 {
-open Parser
+open Parser_ast
 }
 
 let layout = [ ' ' '\t' '\n' ]

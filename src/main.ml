@@ -1,9 +1,10 @@
 open Ast
+open Prog
 
-let open_automaton_file (filename: string) : automate = 
+let open_automaton_file (filename: string): automate = 
   try
     let lexbuf = Lexing.from_channel (open_in filename) in
-    let automaton = Parser.input Lexer.main lexbuf in 
+    let automaton = Parser_ast.input Lexer_ast.main lexbuf in 
     Check_ast.check_automate automaton;
     automaton
 
@@ -11,19 +12,38 @@ let open_automaton_file (filename: string) : automate =
     print_string (filename ^ ": no such file\n"); 
     exit 1
 
+let open_program_file (filename: string): program = 
+  try
+    let lexbuf = Lexing.from_channel (open_in filename) in
+    let program = Parser_prog.input Lexer_prog.main lexbuf in 
+    (*Check_ast.check_automate program;*)
+    program
+
+  with Sys_error _ ->
+    print_string (filename ^ ": no such file\n"); 
+    exit 1    
+
 let usage () =
   print_string "\n";
   print_string "Options d'exécution du programme : \n";
-  print_string "./main -eval <file> <mot> : évalutation de l'automate à l'aide d'un mot\n";
-  print_string "./main -print <file> : affichage de l'automate dans le terminal\n";
+  print_string "./main -eval--phase-1 <file> <mot> : évalutation de l'automate à l'aide d'un mot\n";
+  print_string "./main -eval--phase-3 <file> <mot> : évalutation du programme à l'aide d'un mot\n";
+  print_string "./main -print--phase-1 <file> : affichage de l'automate dans le terminal\n";
+  print_string "./main -print--phase-3 <file> : affichage du programme dans le terminal\n";
   print_string "\n"
 
 let _ =
   match Sys.argv with
-  | [|_;"-eval";filename;argument|] ->
+  | [|_;"-eval--phase1-";filename;argument|] ->
     let automate = open_automaton_file filename in
     Eval_ast.eval_automate automate argument
-  | [|_;"-print";filename|] ->  
+  | [|_;"-eval--phase3-";filename;argument|] ->
     let automate = open_automaton_file filename in
-    Print_ast.print_automate automate  
+    Eval_ast.eval_automate automate argument    
+  | [|_;"-print--phase-1";filename|] ->  
+    let automate = open_automaton_file filename in
+    Print_ast.print_automate automate   
+  | [|_;"-print--phase-3";filename|] ->  
+    let automate = open_program_file filename in
+    print_string "test"   
   | _ -> usage ()

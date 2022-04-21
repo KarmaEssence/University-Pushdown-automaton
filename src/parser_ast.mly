@@ -40,11 +40,3 @@ ID COLON a = list(transition) {a}
 
 transition:
 LPAREN a = ID COMMA b = list(ID) COMMA c = ID COMMA d = ID COMMA e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}
-
-
-
-
-
-
-
-
