@@ -39,7 +39,7 @@ lexer_ast.mll: parser_ast.ml
 lexer_prog.mll: parser_prog.ml
 
 clean:
-	rm -fr parser_ast.mli parser_ast.ml parser_prog.mli\
+	rm -fr parser_ast.mli parser_ast.ml parser_prog.mli \
 	parser_prog.ml lexer_ast.ml *.cmo main *.cmi *~ *.automaton *.conflicts
 
 

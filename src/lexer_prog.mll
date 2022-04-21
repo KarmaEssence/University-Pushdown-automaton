@@ -13,7 +13,7 @@ rule main = parse
   | "pop"       { POP   }
   | "reject"    { REJECT}
   | "change"    { CHANGE  }
-  | "Program"   { PROGRAM }
+  | "program"   { PROGRAM }
   | "begin"     { BEGIN }
   | "case"      { CASE }
   | "state"     { STATE}
@@ -21,7 +21,7 @@ rule main = parse
   | "next"      { NEXT}
   | "of"        { OF}
   | "end"       { END}
-  | ident_char	{ ID (Lexing.lexeme_char lexbuf 0) }
+  | ident_char+	{ ID (Lexing.lexeme_char lexbuf 0) }
   (*| ident_char+	{ IDS (Lexing.lexeme) }*)
   | eof			{ EOF }
   | _			{ failwith "unexpected character" }

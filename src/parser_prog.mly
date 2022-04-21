@@ -33,7 +33,7 @@ declarations:
 a = symbols b = symbols c = states d = initialstate e = initialstack {a, b, c, d, e}
 
 symbols:
-ID ID COLON a =  separated_nonempty_list(COMMA, ID) {a}
+ID ID COLON a = separated_nonempty_list(COMMA, ID) {a}
 
 states:
 ID COLON a = separated_nonempty_list(COMMA, ID) {a}

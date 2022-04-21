@@ -47,4 +47,4 @@ type transition =
 
 type declarations = char list * char list * char list * char * char
 
-type program = declarations * transition list 
+type program = declarations * transition list
