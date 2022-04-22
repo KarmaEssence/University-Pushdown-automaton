@@ -1,13 +1,4 @@
-open Gas6_utils
-
-let rec list_without_state (states: char list) (actions: char list) (newactions: char list): char list =
-  match actions with
-  | [] -> List.rev newactions
-  | element :: subactions ->
-    if List.mem element states then
-      list_without_state states subactions newactions
-    else
-      list_without_state states subactions (element :: newactions)  
+open Gas6_utils 
 
 let rec get_state_from_actions (numtransition: char) (states: char list) (actions: char list): char = 
   match actions with
@@ -38,8 +29,7 @@ let rec convert_actions (actionslist: Prog.action list) (stackslist: char list):
       convert_actions subactionslist newstackslist
     | Reject ->
       print_string "Erreur : Fin du programme.\n";
-      exit 1   
-
+      exit 1
 
 let rec convert_next (nextlist: Prog.next list) (numtransition: char) (stack_symbol: char) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list =
   match nextlist with
@@ -47,7 +37,7 @@ let rec convert_next (nextlist: Prog.next list) (numtransition: char) (stack_sym
   | element :: subnextlist ->
     match element with
     | (letter_to_read, actionslist) ->
-      let actions = convert_actions actionslist [] in
+      let actions = add_stack_symbol (convert_actions actionslist []) stack_symbol in
       let newstate = get_state_from_actions numtransition states actions in
       let actions = list_without_state states actions [] in
       let list_to_read = [letter_to_read] in
@@ -70,7 +60,7 @@ let rec convert_top (toplist: Prog.top list) (numtransition: char) (stack_symbol
       let actions = convert_actions actionslist [] in
       let newstate = get_state_from_actions numtransition states actions in
       let actions = list_without_state states actions [] in
-      let transitions = (numtransition, [' '], stack_symbol, newstate, actions) in
+      let transitions = (numtransition, [], stack_symbol, newstate, actions) in
       convert_top subtoplist numtransition stack_symbols states (newtransitions @ [transitions])
     | Nexts(stack_symbol, nextlist) ->
       let transitions = convert_next nextlist numtransition stack_symbol states [] in 
@@ -80,7 +70,8 @@ let rec convert_transitions (declarations: Ast.declarations) (transitions: Prog.
   match transitions with
   | [] -> newtransitions
   | element :: subtransitions ->
-    let stack_symbols = Ast.getSymbols declarations 2 in
+    let initial_stack = Ast.getInitials declarations 1 in 
+    let stack_symbols = initial_stack_priority (Ast.getSymbols declarations 2) initial_stack [] in
     let states = Ast.getSymbols declarations 1 in
     match element with 
     | Next(numtransition, nextlist) ->

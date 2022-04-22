@@ -73,7 +73,8 @@ let rec test_automate_with_word (automate: automate) (map: char list StringNameT
       print_string "Analyse du mot réussie !\n"
 
 let eval_automate (automate: automate) (word: string): unit = 
+  let declarations = get_declaration automate in 
   let map = StringNameTable.empty in
-  let map = StringNameTable.add "states" [getInitials automate 0] map in
-  let map = StringNameTable.add "stacks" [getInitials automate 1] map in
+  let map = StringNameTable.add "states" [getInitials declarations 0] map in
+  let map = StringNameTable.add "stacks" [getInitials declarations 1] map in
   test_automate_with_word automate map word

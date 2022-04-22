@@ -1,0 +1,753 @@
+State 0:
+## Known stack suffix:
+##
+## LR(1) items:
+input' -> . input [ # ]
+## Transitions:
+-- On ID shift to state 1
+-- On symbols shift to state 8
+-- On program shift to state 25
+-- On input shift to state 27
+-- On declarations shift to state 28
+## Reductions:
+
+State 1:
+## Known stack suffix:
+## ID
+## LR(1) items:
+symbols -> ID . ID COLON separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On ID shift to state 2
+## Reductions:
+
+State 2:
+## Known stack suffix:
+## ID ID
+## LR(1) items:
+symbols -> ID ID . COLON separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On COLON shift to state 3
+## Reductions:
+
+State 3:
+## Known stack suffix:
+## ID ID COLON
+## LR(1) items:
+symbols -> ID ID COLON . separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On ID shift to state 4
+-- On separated_nonempty_list(COMMA,ID) shift to state 7
+## Reductions:
+
+State 4:
+## Known stack suffix:
+## ID
+## LR(1) items:
+separated_nonempty_list(COMMA,ID) -> ID . [ ID ]
+separated_nonempty_list(COMMA,ID) -> ID . COMMA separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On COMMA shift to state 5
+## Reductions:
+-- On ID
+--   reduce production separated_nonempty_list(COMMA,ID) -> ID
+
+State 5:
+## Known stack suffix:
+## ID COMMA
+## LR(1) items:
+separated_nonempty_list(COMMA,ID) -> ID COMMA . separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On ID shift to state 4
+-- On separated_nonempty_list(COMMA,ID) shift to state 6
+## Reductions:
+
+State 6:
+## Known stack suffix:
+## ID COMMA separated_nonempty_list(COMMA,ID)
+## LR(1) items:
+separated_nonempty_list(COMMA,ID) -> ID COMMA separated_nonempty_list(COMMA,ID) . [ ID ]
+## Transitions:
+## Reductions:
+-- On ID
+--   reduce production separated_nonempty_list(COMMA,ID) -> ID COMMA separated_nonempty_list(COMMA,ID)
+
+State 7:
+## Known stack suffix:
+## ID ID COLON separated_nonempty_list(COMMA,ID)
+## LR(1) items:
+symbols -> ID ID COLON separated_nonempty_list(COMMA,ID) . [ ID ]
+## Transitions:
+## Reductions:
+-- On ID
+--   reduce production symbols -> ID ID COLON separated_nonempty_list(COMMA,ID)
+
+State 8:
+## Known stack suffix:
+## symbols
+## LR(1) items:
+declarations -> symbols . symbols states initialstate initialstack [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 1
+-- On symbols shift to state 9
+## Reductions:
+
+State 9:
+## Known stack suffix:
+## symbols symbols
+## LR(1) items:
+declarations -> symbols symbols . states initialstate initialstack [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 10
+-- On states shift to state 13
+## Reductions:
+
+State 10:
+## Known stack suffix:
+## ID
+## LR(1) items:
+states -> ID . COLON separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On COLON shift to state 11
+## Reductions:
+
+State 11:
+## Known stack suffix:
+## ID COLON
+## LR(1) items:
+states -> ID COLON . separated_nonempty_list(COMMA,ID) [ ID ]
+## Transitions:
+-- On ID shift to state 4
+-- On separated_nonempty_list(COMMA,ID) shift to state 12
+## Reductions:
+
+State 12:
+## Known stack suffix:
+## ID COLON separated_nonempty_list(COMMA,ID)
+## LR(1) items:
+states -> ID COLON separated_nonempty_list(COMMA,ID) . [ ID ]
+## Transitions:
+## Reductions:
+-- On ID
+--   reduce production states -> ID COLON separated_nonempty_list(COMMA,ID)
+
+State 13:
+## Known stack suffix:
+## symbols symbols states
+## LR(1) items:
+declarations -> symbols symbols states . initialstate initialstack [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 14
+-- On initialstate shift to state 18
+## Reductions:
+
+State 14:
+## Known stack suffix:
+## ID
+## LR(1) items:
+initialstate -> ID . ID COLON ID [ ID ]
+## Transitions:
+-- On ID shift to state 15
+## Reductions:
+
+State 15:
+## Known stack suffix:
+## ID ID
+## LR(1) items:
+initialstate -> ID ID . COLON ID [ ID ]
+## Transitions:
+-- On COLON shift to state 16
+## Reductions:
+
+State 16:
+## Known stack suffix:
+## ID ID COLON
+## LR(1) items:
+initialstate -> ID ID COLON . ID [ ID ]
+## Transitions:
+-- On ID shift to state 17
+## Reductions:
+
+State 17:
+## Known stack suffix:
+## ID ID COLON ID
+## LR(1) items:
+initialstate -> ID ID COLON ID . [ ID ]
+## Transitions:
+## Reductions:
+-- On ID
+--   reduce production initialstate -> ID ID COLON ID
+
+State 18:
+## Known stack suffix:
+## symbols symbols states initialstate
+## LR(1) items:
+declarations -> symbols symbols states initialstate . initialstack [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 19
+-- On initialstack shift to state 24
+## Reductions:
+
+State 19:
+## Known stack suffix:
+## ID
+## LR(1) items:
+initialstack -> ID . ID ID COLON ID [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 20
+## Reductions:
+
+State 20:
+## Known stack suffix:
+## ID ID
+## LR(1) items:
+initialstack -> ID ID . ID COLON ID [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 21
+## Reductions:
+
+State 21:
+## Known stack suffix:
+## ID ID ID
+## LR(1) items:
+initialstack -> ID ID ID . COLON ID [ PROGRAM ]
+## Transitions:
+-- On COLON shift to state 22
+## Reductions:
+
+State 22:
+## Known stack suffix:
+## ID ID ID COLON
+## LR(1) items:
+initialstack -> ID ID ID COLON . ID [ PROGRAM ]
+## Transitions:
+-- On ID shift to state 23
+## Reductions:
+
+State 23:
+## Known stack suffix:
+## ID ID ID COLON ID
+## LR(1) items:
+initialstack -> ID ID ID COLON ID . [ PROGRAM ]
+## Transitions:
+## Reductions:
+-- On PROGRAM
+--   reduce production initialstack -> ID ID ID COLON ID
+
+State 24:
+## Known stack suffix:
+## symbols symbols states initialstate initialstack
+## LR(1) items:
+declarations -> symbols symbols states initialstate initialstack . [ PROGRAM ]
+## Transitions:
+## Reductions:
+-- On PROGRAM
+--   reduce production declarations -> symbols symbols states initialstate initialstack
+
+State 25:
+## Known stack suffix:
+## program
+## LR(1) items:
+input -> program . EOF [ # ]
+## Transitions:
+-- On EOF shift to state 26
+## Reductions:
+
+State 26:
+## Known stack suffix:
+## program EOF
+## LR(1) items:
+input -> program EOF . [ # ]
+## Transitions:
+## Reductions:
+-- On #
+--   reduce production input -> program EOF
+
+State 27:
+## Known stack suffix:
+## input
+## LR(1) items:
+input' -> input . [ # ]
+## Transitions:
+## Reductions:
+-- On #
+--   accept input
+
+State 28:
+## Known stack suffix:
+## declarations
+## LR(1) items:
+program -> declarations . transitions [ EOF ]
+## Transitions:
+-- On PROGRAM shift to state 29
+-- On transitions shift to state 73
+## Reductions:
+
+State 29:
+## Known stack suffix:
+## PROGRAM
+## LR(1) items:
+transitions -> PROGRAM . COLON CASE STATE OF nonempty_list(transition) [ EOF ]
+## Transitions:
+-- On COLON shift to state 30
+## Reductions:
+
+State 30:
+## Known stack suffix:
+## PROGRAM COLON
+## LR(1) items:
+transitions -> PROGRAM COLON . CASE STATE OF nonempty_list(transition) [ EOF ]
+## Transitions:
+-- On CASE shift to state 31
+## Reductions:
+
+State 31:
+## Known stack suffix:
+## PROGRAM COLON CASE
+## LR(1) items:
+transitions -> PROGRAM COLON CASE . STATE OF nonempty_list(transition) [ EOF ]
+## Transitions:
+-- On STATE shift to state 32
+## Reductions:
+
+State 32:
+## Known stack suffix:
+## PROGRAM COLON CASE STATE
+## LR(1) items:
+transitions -> PROGRAM COLON CASE STATE . OF nonempty_list(transition) [ EOF ]
+## Transitions:
+-- On OF shift to state 33
+## Reductions:
+
+State 33:
+## Known stack suffix:
+## PROGRAM COLON CASE STATE OF
+## LR(1) items:
+transitions -> PROGRAM COLON CASE STATE OF . nonempty_list(transition) [ EOF ]
+## Transitions:
+-- On ID shift to state 34
+-- On transition shift to state 70
+-- On nonempty_list(transition) shift to state 72
+## Reductions:
+
+State 34:
+## Known stack suffix:
+## ID
+## LR(1) items:
+transition -> ID . COLON BEGIN CASE TOP OF nonempty_list(top) END [ ID EOF ]
+transition -> ID . COLON BEGIN CASE NEXT OF nonempty_list(next) END [ ID EOF ]
+## Transitions:
+-- On COLON shift to state 35
+## Reductions:
+
+State 35:
+## Known stack suffix:
+## ID COLON
+## LR(1) items:
+transition -> ID COLON . BEGIN CASE TOP OF nonempty_list(top) END [ ID EOF ]
+transition -> ID COLON . BEGIN CASE NEXT OF nonempty_list(next) END [ ID EOF ]
+## Transitions:
+-- On BEGIN shift to state 36
+## Reductions:
+
+State 36:
+## Known stack suffix:
+## ID COLON BEGIN
+## LR(1) items:
+transition -> ID COLON BEGIN . CASE TOP OF nonempty_list(top) END [ ID EOF ]
+transition -> ID COLON BEGIN . CASE NEXT OF nonempty_list(next) END [ ID EOF ]
+## Transitions:
+-- On CASE shift to state 37
+## Reductions:
+
+State 37:
+## Known stack suffix:
+## ID COLON BEGIN CASE
+## LR(1) items:
+transition -> ID COLON BEGIN CASE . TOP OF nonempty_list(top) END [ ID EOF ]
+transition -> ID COLON BEGIN CASE . NEXT OF nonempty_list(next) END [ ID EOF ]
+## Transitions:
+-- On TOP shift to state 38
+-- On NEXT shift to state 66
+## Reductions:
+
+State 38:
+## Known stack suffix:
+## ID COLON BEGIN CASE TOP
+## LR(1) items:
+transition -> ID COLON BEGIN CASE TOP . OF nonempty_list(top) END [ ID EOF ]
+## Transitions:
+-- On OF shift to state 39
+## Reductions:
+
+State 39:
+## Known stack suffix:
+## ID COLON BEGIN CASE TOP OF
+## LR(1) items:
+transition -> ID COLON BEGIN CASE TOP OF . nonempty_list(top) END [ ID EOF ]
+## Transitions:
+-- On ID shift to state 40
+-- On top shift to state 62
+-- On nonempty_list(top) shift to state 64
+## Reductions:
+
+State 40:
+## Known stack suffix:
+## ID
+## LR(1) items:
+top -> ID . COLON BEGIN CASE NEXT OF nonempty_list(next) END [ ID END ]
+top -> ID . COLON nonempty_list(action) [ ID END ]
+## Transitions:
+-- On COLON shift to state 41
+## Reductions:
+
+State 41:
+## Known stack suffix:
+## ID COLON
+## LR(1) items:
+top -> ID COLON . BEGIN CASE NEXT OF nonempty_list(next) END [ ID END ]
+top -> ID COLON . nonempty_list(action) [ ID END ]
+## Transitions:
+-- On REJECT shift to state 42
+-- On PUSH shift to state 43
+-- On POP shift to state 45
+-- On CHANGE shift to state 46
+-- On BEGIN shift to state 48
+-- On nonempty_list(action) shift to state 61
+-- On action shift to state 55
+## Reductions:
+
+State 42:
+## Known stack suffix:
+## REJECT
+## LR(1) items:
+action -> REJECT . [ REJECT PUSH POP ID END CHANGE ]
+## Transitions:
+## Reductions:
+-- On REJECT PUSH POP ID END CHANGE
+--   reduce production action -> REJECT
+
+State 43:
+## Known stack suffix:
+## PUSH
+## LR(1) items:
+action -> PUSH . ID [ REJECT PUSH POP ID END CHANGE ]
+## Transitions:
+-- On ID shift to state 44
+## Reductions:
+
+State 44:
+## Known stack suffix:
+## PUSH ID
+## LR(1) items:
+action -> PUSH ID . [ REJECT PUSH POP ID END CHANGE ]
+## Transitions:
+## Reductions:
+-- On REJECT PUSH POP ID END CHANGE
+--   reduce production action -> PUSH ID
+
+State 45:
+## Known stack suffix:
+## POP
+## LR(1) items:
+action -> POP . [ REJECT PUSH POP ID END CHANGE ]
+## Transitions:
+## Reductions:
+-- On REJECT PUSH POP ID END CHANGE
+--   reduce production action -> POP
+
+State 46:
+## Known stack suffix:
+## CHANGE
+## LR(1) items:
+action -> CHANGE . ID [ REJECT PUSH POP ID END CHANGE ]
+## Transitions:
+-- On ID shift to state 47
+## Reductions:
+
+State 47:
+## Known stack suffix:
+## CHANGE ID
+## LR(1) items:
+action -> CHANGE ID . [ REJECT PUSH POP ID END CHANGE ]
+## Transitions:
+## Reductions:
+-- On REJECT PUSH POP ID END CHANGE
+--   reduce production action -> CHANGE ID
+
+State 48:
+## Known stack suffix:
+## ID COLON BEGIN
+## LR(1) items:
+top -> ID COLON BEGIN . CASE NEXT OF nonempty_list(next) END [ ID END ]
+## Transitions:
+-- On CASE shift to state 49
+## Reductions:
+
+State 49:
+## Known stack suffix:
+## ID COLON BEGIN CASE
+## LR(1) items:
+top -> ID COLON BEGIN CASE . NEXT OF nonempty_list(next) END [ ID END ]
+## Transitions:
+-- On NEXT shift to state 50
+## Reductions:
+
+State 50:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT
+## LR(1) items:
+top -> ID COLON BEGIN CASE NEXT . OF nonempty_list(next) END [ ID END ]
+## Transitions:
+-- On OF shift to state 51
+## Reductions:
+
+State 51:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT OF
+## LR(1) items:
+top -> ID COLON BEGIN CASE NEXT OF . nonempty_list(next) END [ ID END ]
+## Transitions:
+-- On ID shift to state 52
+-- On nonempty_list(next) shift to state 57
+-- On next shift to state 59
+## Reductions:
+
+State 52:
+## Known stack suffix:
+## ID
+## LR(1) items:
+next -> ID . COLON nonempty_list(action) [ ID END ]
+## Transitions:
+-- On COLON shift to state 53
+## Reductions:
+
+State 53:
+## Known stack suffix:
+## ID COLON
+## LR(1) items:
+next -> ID COLON . nonempty_list(action) [ ID END ]
+## Transitions:
+-- On REJECT shift to state 42
+-- On PUSH shift to state 43
+-- On POP shift to state 45
+-- On CHANGE shift to state 46
+-- On nonempty_list(action) shift to state 54
+-- On action shift to state 55
+## Reductions:
+
+State 54:
+## Known stack suffix:
+## ID COLON nonempty_list(action)
+## LR(1) items:
+next -> ID COLON nonempty_list(action) . [ ID END ]
+## Transitions:
+## Reductions:
+-- On ID END
+--   reduce production next -> ID COLON nonempty_list(action)
+
+State 55:
+## Known stack suffix:
+## action
+## LR(1) items:
+nonempty_list(action) -> action . [ ID END ]
+nonempty_list(action) -> action . nonempty_list(action) [ ID END ]
+## Transitions:
+-- On REJECT shift to state 42
+-- On PUSH shift to state 43
+-- On POP shift to state 45
+-- On CHANGE shift to state 46
+-- On nonempty_list(action) shift to state 56
+-- On action shift to state 55
+## Reductions:
+-- On ID END
+--   reduce production nonempty_list(action) -> action
+
+State 56:
+## Known stack suffix:
+## action nonempty_list(action)
+## LR(1) items:
+nonempty_list(action) -> action nonempty_list(action) . [ ID END ]
+## Transitions:
+## Reductions:
+-- On ID END
+--   reduce production nonempty_list(action) -> action nonempty_list(action)
+
+State 57:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT OF nonempty_list(next)
+## LR(1) items:
+top -> ID COLON BEGIN CASE NEXT OF nonempty_list(next) . END [ ID END ]
+## Transitions:
+-- On END shift to state 58
+## Reductions:
+
+State 58:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT OF nonempty_list(next) END
+## LR(1) items:
+top -> ID COLON BEGIN CASE NEXT OF nonempty_list(next) END . [ ID END ]
+## Transitions:
+## Reductions:
+-- On ID END
+--   reduce production top -> ID COLON BEGIN CASE NEXT OF nonempty_list(next) END
+
+State 59:
+## Known stack suffix:
+## next
+## LR(1) items:
+nonempty_list(next) -> next . [ END ]
+nonempty_list(next) -> next . nonempty_list(next) [ END ]
+## Transitions:
+-- On ID shift to state 52
+-- On nonempty_list(next) shift to state 60
+-- On next shift to state 59
+## Reductions:
+-- On END
+--   reduce production nonempty_list(next) -> next
+
+State 60:
+## Known stack suffix:
+## next nonempty_list(next)
+## LR(1) items:
+nonempty_list(next) -> next nonempty_list(next) . [ END ]
+## Transitions:
+## Reductions:
+-- On END
+--   reduce production nonempty_list(next) -> next nonempty_list(next)
+
+State 61:
+## Known stack suffix:
+## ID COLON nonempty_list(action)
+## LR(1) items:
+top -> ID COLON nonempty_list(action) . [ ID END ]
+## Transitions:
+## Reductions:
+-- On ID END
+--   reduce production top -> ID COLON nonempty_list(action)
+
+State 62:
+## Known stack suffix:
+## top
+## LR(1) items:
+nonempty_list(top) -> top . [ END ]
+nonempty_list(top) -> top . nonempty_list(top) [ END ]
+## Transitions:
+-- On ID shift to state 40
+-- On top shift to state 62
+-- On nonempty_list(top) shift to state 63
+## Reductions:
+-- On END
+--   reduce production nonempty_list(top) -> top
+
+State 63:
+## Known stack suffix:
+## top nonempty_list(top)
+## LR(1) items:
+nonempty_list(top) -> top nonempty_list(top) . [ END ]
+## Transitions:
+## Reductions:
+-- On END
+--   reduce production nonempty_list(top) -> top nonempty_list(top)
+
+State 64:
+## Known stack suffix:
+## ID COLON BEGIN CASE TOP OF nonempty_list(top)
+## LR(1) items:
+transition -> ID COLON BEGIN CASE TOP OF nonempty_list(top) . END [ ID EOF ]
+## Transitions:
+-- On END shift to state 65
+## Reductions:
+
+State 65:
+## Known stack suffix:
+## ID COLON BEGIN CASE TOP OF nonempty_list(top) END
+## LR(1) items:
+transition -> ID COLON BEGIN CASE TOP OF nonempty_list(top) END . [ ID EOF ]
+## Transitions:
+## Reductions:
+-- On ID EOF
+--   reduce production transition -> ID COLON BEGIN CASE TOP OF nonempty_list(top) END
+
+State 66:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT
+## LR(1) items:
+transition -> ID COLON BEGIN CASE NEXT . OF nonempty_list(next) END [ ID EOF ]
+## Transitions:
+-- On OF shift to state 67
+## Reductions:
+
+State 67:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT OF
+## LR(1) items:
+transition -> ID COLON BEGIN CASE NEXT OF . nonempty_list(next) END [ ID EOF ]
+## Transitions:
+-- On ID shift to state 52
+-- On nonempty_list(next) shift to state 68
+-- On next shift to state 59
+## Reductions:
+
+State 68:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT OF nonempty_list(next)
+## LR(1) items:
+transition -> ID COLON BEGIN CASE NEXT OF nonempty_list(next) . END [ ID EOF ]
+## Transitions:
+-- On END shift to state 69
+## Reductions:
+
+State 69:
+## Known stack suffix:
+## ID COLON BEGIN CASE NEXT OF nonempty_list(next) END
+## LR(1) items:
+transition -> ID COLON BEGIN CASE NEXT OF nonempty_list(next) END . [ ID EOF ]
+## Transitions:
+## Reductions:
+-- On ID EOF
+--   reduce production transition -> ID COLON BEGIN CASE NEXT OF nonempty_list(next) END
+
+State 70:
+## Known stack suffix:
+## transition
+## LR(1) items:
+nonempty_list(transition) -> transition . [ EOF ]
+nonempty_list(transition) -> transition . nonempty_list(transition) [ EOF ]
+## Transitions:
+-- On ID shift to state 34
+-- On transition shift to state 70
+-- On nonempty_list(transition) shift to state 71
+## Reductions:
+-- On EOF
+--   reduce production nonempty_list(transition) -> transition
+
+State 71:
+## Known stack suffix:
+## transition nonempty_list(transition)
+## LR(1) items:
+nonempty_list(transition) -> transition nonempty_list(transition) . [ EOF ]
+## Transitions:
+## Reductions:
+-- On EOF
+--   reduce production nonempty_list(transition) -> transition nonempty_list(transition)
+
+State 72:
+## Known stack suffix:
+## PROGRAM COLON CASE STATE OF nonempty_list(transition)
+## LR(1) items:
+transitions -> PROGRAM COLON CASE STATE OF nonempty_list(transition) . [ EOF ]
+## Transitions:
+## Reductions:
+-- On EOF
+--   reduce production transitions -> PROGRAM COLON CASE STATE OF nonempty_list(transition)
+
+State 73:
+## Known stack suffix:
+## declarations transitions
+## LR(1) items:
+program -> declarations transitions . [ EOF ]
+## Transitions:
+## Reductions:
+-- On EOF
+--   reduce production program -> declarations transitions
+
