@@ -9,6 +9,7 @@ open Gas6_utils
 (*                              eval_ast                               *)  
 (***********************************************************************)
 
+(*Print all stape of the execution of eval option.*)
 let print_actual_position (word: string) (map: char list StringNameTable.t): unit = 
   print_string "\n";
   print_string ("Mot à lire : " ^ word ^ "\n");
@@ -19,11 +20,13 @@ let print_actual_position (word: string) (map: char list StringNameTable.t): uni
   print_stringlist (StringNameTable.find "stacks" map) 0;
   print_string "\n"
   
+(*Updating of the map.*)  
 let update_map (list_of_states: char list) (list_of_stacks: char list) (map: char list StringNameTable.t): char list StringNameTable.t = 
   let map = StringNameTable.add "states" list_of_states map in
   StringNameTable.add "stacks" list_of_stacks map   
 
-
+(*Test an automate with an char, return a char map if the run has succeed,
+else print a message and terminate the execution.*)
 let rec test_automate_with_char (transitions: transition list) (map: char list StringNameTable.t) (element: char): char list StringNameTable.t =
   match (transitions) with
   | [] -> 
@@ -55,7 +58,9 @@ let rec test_automate_with_char (transitions: transition list) (map: char list S
 
       else
         test_automate_with_char subtransitions map element
-          
+
+(*Test an automate with a word, return nothing if the run has succeed,
+else print a message and terminate the execution.*)        
 let rec test_automate_with_word (automate: automate) (map: char list StringNameTable.t) (word: string): unit = 
   print_actual_position word map;
   if String.length word > 0 then
@@ -71,6 +76,7 @@ let rec test_automate_with_word (automate: automate) (map: char list StringNameT
     else   
       print_string "Analyse du mot réussie !\n"
 
+(*To evaluate an automate.*)      
 let eval_automate (automate: automate) (word: string): unit = 
   let declarations = get_declaration automate in 
   let map = StringNameTable.empty in

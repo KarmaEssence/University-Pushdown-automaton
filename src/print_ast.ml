@@ -9,6 +9,7 @@ open Gas6_utils
 (*                              print_ast                              *)  
 (***********************************************************************)
 
+(*Print the automate transitions.*)
 let rec print_transitions (transitions: transition list) : unit = 
   match transitions with
   | [] -> print_string "\n"
@@ -20,6 +21,7 @@ let rec print_transitions (transitions: transition list) : unit =
     print_transitions sublist
   ;;  
 
+(*Print the automate declarations.*)  
 let print_declarations (declarations: declarations) : unit = 
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
@@ -34,6 +36,7 @@ let print_declarations (declarations: declarations) : unit =
 
   ;;  
 
+(*Print the automate.*)   
 let print_automate (automate: automate) : unit =
   match automate with
   | (declarations, transitions) ->

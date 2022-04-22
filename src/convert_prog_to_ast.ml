@@ -8,6 +8,7 @@ open Gas6_utils
 (*                          convert_prog_to_ast                        *)  
 (***********************************************************************)
 
+(*Get the new state of the automate in actions list (if this one exist).*)
 let rec get_state_from_actions (numtransition: char) (states: char list) (actions: char list): char = 
   match actions with
   | [] -> numtransition
@@ -15,8 +16,9 @@ let rec get_state_from_actions (numtransition: char) (states: char list) (action
     if List.mem element states then
       element
     else 
-      get_state_from_actions numtransition states subactions  
+      get_state_from_actions numtransition states subactions
 
+(*Convert actions instruction to automate actions.*)
 let rec convert_actions (actionslist: Prog.action list) (stackslist: char list): char list =
   match actionslist with
   | [] -> List.rev stackslist
@@ -39,6 +41,7 @@ let rec convert_actions (actionslist: Prog.action list) (stackslist: char list):
       print_string "Erreur : Fin du programme.\n";
       exit 1
 
+(*Convert next instruction to automate actions per letter has readed.*)
 let rec convert_next (nextlist: Prog.next list) (numtransition: char) (stack_symbol: char) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list =
   match nextlist with
   | [] -> List.rev newtransitions
@@ -52,6 +55,7 @@ let rec convert_next (nextlist: Prog.next list) (numtransition: char) (stack_sym
       let transition = (numtransition, list_to_read, stack_symbol, newstate, actions) in
       convert_next subnextlist numtransition stack_symbol states (transition :: newtransitions)
 
+(*Particular case of convertion, when all letter to read have share all stack symbols.*)      
 let rec convert_nexts (nextlist: Prog.next list) (numtransition: char) (stack_symbols: char list) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list =
   match stack_symbols with
   | [] -> newtransitions
@@ -59,6 +63,7 @@ let rec convert_nexts (nextlist: Prog.next list) (numtransition: char) (stack_sy
     let transitions = convert_next nextlist numtransition element states [] in
     convert_nexts nextlist numtransition substack_symbols states (newtransitions @ transitions)
 
+(*Convert top instruction to automate actions per letter has readed and the current stack symbols has used.*)
 let rec convert_top (toplist: Prog.top list) (numtransition: char) (stack_symbols: char list) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list = 
   match toplist with
   | [] -> newtransitions
@@ -74,6 +79,7 @@ let rec convert_top (toplist: Prog.top list) (numtransition: char) (stack_symbol
       let transitions = convert_next nextlist numtransition stack_symbol states [] in 
       convert_top subtoplist numtransition stack_symbols states (newtransitions @ transitions) 
 
+(*Convert instructions to automate transitions.*)      
 let rec convert_transitions (declarations: Ast.declarations) (transitions: Prog.transition list) (newtransitions: Ast.transition list) : Ast.transition list = 
   match transitions with
   | [] -> newtransitions
@@ -89,6 +95,7 @@ let rec convert_transitions (declarations: Ast.declarations) (transitions: Prog.
       let restransitions = convert_top toplist numtransition stack_symbols states [] in
       convert_transitions declarations subtransitions (newtransitions @ restransitions)
 
+(*Convert instructions to automate.*)       
 let convert_prog_to_ast (program: Prog.program) : Ast.automate = 
   match program with
   | (declarations, transitions) ->

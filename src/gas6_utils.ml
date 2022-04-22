@@ -2,6 +2,7 @@
 (*                             gas6_utils                              *)  
 (***********************************************************************)
 
+(*Print the content of the list.*)
 let rec print_stringlist (list : char list) (flag : int): unit =
   match list with 
   | [] -> 
@@ -12,10 +13,12 @@ let rec print_stringlist (list : char list) (flag : int): unit =
   | element :: sublist -> 
       print_string (Char.escaped element ^ " ");
       print_stringlist sublist flag
-        
+
+(*Return the list without the last word.*)      
 let list_without_last_word (list : char list): char list = 
   List.rev (List.tl (List.rev list)) 
   
+(*Clear the list from all digit (state).*)  
 let rec list_without_state (states: char list) (actions: char list) (newactions: char list): char list =
   match actions with
   | [] -> List.rev newactions
@@ -24,11 +27,13 @@ let rec list_without_state (states: char list) (actions: char list) (newactions:
       list_without_state states subactions newactions
     else
       list_without_state states subactions (element :: newactions) 
-      
+
+(*If the list is not empty, include the initial stack symbol at the begin of the list.*)      
 let rec add_stack_symbol (actions: char list) (stack_symbol: char) : char list = 
   if List.length actions > 0 then stack_symbol :: actions
   else []     
   
+(*Sort the list in function of the initial stack symbol.*)  
 let rec initial_stack_priority (list: char list) (stack_symbol: char) (reslist: char list): char list = 
   match list with
   | [] -> List.rev reslist

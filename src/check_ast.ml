@@ -8,6 +8,8 @@ open Ast
 (*                              check_ast                              *)  
 (***********************************************************************)
 
+(*Allow to verify if transitions have good format, else print accurately the error
+and exit the program.*)
 let rec check_transitions (transitions: transition list) (map: string list NameTable.t): unit = 
   match transitions with
   | [] -> print_string "\n"
@@ -36,7 +38,8 @@ let rec check_transitions (transitions: transition list) (map: string list NameT
           let map = NameTable.add key [value] map in
           check_transitions subtransitions map
 
-
+(*Allow to verify if declarations have good format, else print accurately the error
+and exit the program.*)
 let check_declarations (declarations: declarations): unit = 
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
@@ -52,6 +55,8 @@ let check_declarations (declarations: declarations): unit =
       print_string "Erreur : L'état initial doit être un élément de l’ensemble des états.\n";
       exit error_code
 
+(*Allow to verify if automate has good format, else print accurately the error
+and exit the program.*)
 let check_automate (automate: automate): unit = 
   match automate with
   | (declarations, transitions) ->
