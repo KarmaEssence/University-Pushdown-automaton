@@ -9,7 +9,7 @@ type action =
 type next = char * action list
 
 type top = 
-| Actions of next
+| Actions of char * action list
 | Nexts of char * next list
 
 type transition = 
