@@ -4,7 +4,7 @@ OCAMLC=ocamlc
 OCAMLLEX=ocamllex
 
 SOURCES = ast.ml prog.ml gas6_utils.ml check_ast.ml print_ast.ml print_prog.ml eval_ast.ml\
-parser_ast.ml parser_prog.ml lexer_ast.ml lexer_prog.ml main.ml
+convert_prog_to_ast.ml parser_ast.ml parser_prog.ml lexer_ast.ml lexer_prog.ml main.ml
 
 OBJECTS = $(SOURCES:.ml=.cmo)
 
@@ -13,8 +13,9 @@ OBJECTS = $(SOURCES:.ml=.cmo)
 all: main
 
 main: ast.cmo prog.cmo gas6_utils.cmo check_ast.cmi check_ast.cmo\
-print_ast.cmi print_ast.cmo print_prog.cmi print_prog.cmo eval_ast.cmi eval_ast.cmo parser_ast.cmi\
-parser_ast.cmo parser_prog.cmi parser_prog.cmo lexer_ast.cmo lexer_prog.cmo main.cmo 
+print_ast.cmi print_ast.cmo print_prog.cmi print_prog.cmo eval_ast.cmi eval_ast.cmo\
+convert_prog_to_ast.cmi convert_prog_to_ast.cmo parser_ast.cmi parser_ast.cmo\
+parser_prog.cmi parser_prog.cmo lexer_ast.cmo lexer_prog.cmo main.cmo 
 	$(OCAMLC) -o $@ $(OBJECTS)
 
 %.cmo: %.ml
