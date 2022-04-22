@@ -1,3 +1,7 @@
+(***********************************************************************)
+(*                                 ast                                 *)  
+(***********************************************************************)
+
 type transition = char * char list * char * char * char list
 
 type declarations = char list * char list * char list * char * char
@@ -23,17 +27,7 @@ let getInitials (declarations: declarations) (flag: int): char =
   match declarations with
   | (_, _, _, state, stack) ->  
     if flag = 0 then state
-    else stack   
-      
-(*let getInitials (automate: automate) (flag: int): char = 
-  match automate with
-  | (declarations, _) ->
-    if flag == 0 then
-      match declarations with
-      | (_, _, _, initial_state, _) -> initial_state
-    else
-      match declarations with
-      | (_, _, _, _, initial_stack) -> initial_stack*)      
+    else stack      
 
 let getTransitionsList (automate: automate): transition list = 
   match automate with
