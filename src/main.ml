@@ -17,7 +17,7 @@ let open_program_file (filename: string): automate =
     let lexbuf = Lexing.from_channel (open_in filename) in
     let program = Parser_prog.input Lexer_prog.main lexbuf in 
     let automate = Convert_prog_to_ast.convert_prog_to_ast program in
-    (*Check_ast.check_automate program;*)
+    Check_ast.check_automate automate;
     automate
 
   with Sys_error _ ->
@@ -35,11 +35,11 @@ let usage () =
 
 let _ =
   match Sys.argv with
-  | [|_;"-eval--phase1-";filename;argument|] ->
+  | [|_;"-eval--phase-1";filename;argument|] ->
     let automate = open_automaton_file filename in
     Eval_ast.eval_automate automate argument
-  | [|_;"-eval--phase3-";filename;argument|] ->
-    let automate = open_automaton_file filename in
+  | [|_;"-eval--phase-3";filename;argument|] ->
+    let automate = open_program_file filename in
     Eval_ast.eval_automate automate argument    
   | [|_;"-print--phase-1";filename|] ->  
     let automate = open_automaton_file filename in

@@ -21,7 +21,7 @@ let print_declarations (declarations: declarations) : unit =
     print_stringlist stack_symbols 0;
     print_string "States : ";
     print_stringlist states 0;
-    print_string ("Initial symbols : " ^ Char.escaped initial_state ^ "\n");
+    print_string ("Initial state : " ^ Char.escaped initial_state ^ "\n");
     print_string ("Initial stack : " ^ Char.escaped initial_stack ^ "\n\n")
 
   ;;  

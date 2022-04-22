@@ -27,16 +27,7 @@ let rec test_automate_with_char (transitions: transition list) (map: char list S
     | (current_state, listletter_toread, stack_topop, state_wanted, list_stack_topush) ->
       let list_of_states = StringNameTable.find "states" map in
       let list_of_stacks = StringNameTable.find "stacks" map in
-      (*print_string "\nstate : ";
-      print_int (List.length list_of_states);
-      print_string "\n--\nstack : ";
-      print_int (List.length listletter_toread);*)
-      (*print_string "\n";
-      print_char current_state;
-      print_char (state_wanted);
-      print_char (stack_topop);*)
-      (*print_int (List.length list_of_stacks);*)
-      print_string "\n";
+      
       if List.hd (List.rev list_of_states) = current_state &&
          List.hd (List.rev list_of_stacks) = stack_topop && 
          ((List.length listletter_toread = 0  && element = ' ') || 

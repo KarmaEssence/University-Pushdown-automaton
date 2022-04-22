@@ -7,6 +7,11 @@ let ident_char = [ 'a'- 'z''A'-'Z''0'-'9' ]
 
 rule main = parse
   | layout		{ main lexbuf }
+  | "input"     { INPUT }
+  | "symbols"   { SYMBOLS }
+  | "stack"     { STACK }
+  | "initial"   { INITIAL }
+  | "states"    { STATES }
   | ','         { COMMA }
   | ':'         { COLON }
   | "push"      { PUSH  }
@@ -16,7 +21,7 @@ rule main = parse
   | "program"   { PROGRAM }
   | "begin"     { BEGIN }
   | "case"      { CASE }
-  | "state"     { STATE}
+  | "state"     { STATE }
   | "top"       { TOP}
   | "next"      { NEXT}
   | "of"        { OF}

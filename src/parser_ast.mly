@@ -2,12 +2,13 @@
 open Ast
 %}
 
+%token INPUT SYMBOLS STACK INITIAL STATES STATE
 %token LPAREN RPAREN COMMA COLON SEMICOLON EOF
 %token<char> ID 
 
 %start<Ast.automate> input
 %type<Ast.declarations> declarations
-%type<char list> symbols states
+%type<char list> inputsymbols stacksymbols states
 %type<char> initialstate initialstack
 %type<Ast.transition list> transitions
 %type<Ast.transition> transition
@@ -21,19 +22,22 @@ automate:
 a = declarations b = transitions {a, b}
 
 declarations:
-a = symbols b = symbols c = states d = initialstate e = initialstack {a, b, c, d, e}
+a = inputsymbols b = stacksymbols c = states d = initialstate e = initialstack {a, b, c, d, e}
 
-symbols:
-ID ID COLON a =  separated_nonempty_list(COMMA, ID) {a}
+inputsymbols:
+INPUT SYMBOLS COLON a = separated_nonempty_list(COMMA, ID) {a}
+
+stacksymbols:
+STACK SYMBOLS COLON a = separated_nonempty_list(COMMA, ID) {a}
 
 states:
-ID COLON a = separated_nonempty_list(COMMA, ID) {a}
+STATES COLON a = separated_nonempty_list(COMMA, ID) {a}
 
 initialstate:
-ID ID COLON a = ID {a}
+INITIAL STATE COLON a = ID {a}
 
 initialstack:
-ID ID ID COLON a = ID {a}
+INITIAL STACK COLON a = ID {a}
 
 transitions:
 ID COLON a = list(transition) {a}
