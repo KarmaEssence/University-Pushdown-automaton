@@ -11,11 +11,11 @@
 
    - evaluation of automaton : 
 
-            ./main -eval <file> <word>
+            ./main -eval--phase-<1 or 3> <file> <word>
    
     - printing of automaton : 
    
-            ./main -print <file>
+            ./main -print--phase-<1 or 3> <file>
 
 3) If you change code in a file, you need to do:
 
@@ -31,6 +31,8 @@ Currently implemented in this project :
    - Could print and evaluate your automatons. [Phase-1]
    - Some options and makefile to compile all extensions. [Phase-1]
    - Checker for automatons. [Phase-2]
+   - Read new format of file [Phase-3]
+   - Convert this format to automate format [Phase-3]
    
 
 ## RoadMap
@@ -41,6 +43,8 @@ This section shows the repartition of all task :
    - Issue 2 has been done by Kévin
    - Issue 3 has been done by Léo
    - Issue 4 has been done by Kévin
+   - Issue 5 has been done by Kévin
+   - Issue 6 has been done by Léo
 
 
 ## Contributors
