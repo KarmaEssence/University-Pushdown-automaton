@@ -34,5 +34,4 @@ setup.log
 _opam/
 
 #generated ml files
-parser_ast.ml
-parser_prog.ml
+parser.ml
