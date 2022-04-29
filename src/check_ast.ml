@@ -10,7 +10,7 @@ open Type
 
 (*Allow to verify if transitions have good format, else print accurately the error
 and exit the program.*)
-let rec check_transitions (transitions: transition list) (map: string list NameTable.t): unit = 
+let rec check_transitions (transitions: automate_transition list) (map: string list NameTable.t): unit = 
   match transitions with
   | [] -> print_string "\n"
   | transition :: subtransitions ->
@@ -40,7 +40,7 @@ let rec check_transitions (transitions: transition list) (map: string list NameT
 
 (*Allow to verify if declarations have good format, else print accurately the error
 and exit the program.*)
-let check_declarations (declarations: declarations): unit = 
+let check_declarations (declarations: automate_declarations): unit = 
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
     if List.mem initial_state states then

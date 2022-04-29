@@ -21,13 +21,15 @@ let print_actual_position (word: string) (map: char list StringNameTable.t): uni
   print_string "\n"
   
 (*Updating of the map.*)  
-let update_map (list_of_states: char list) (list_of_stacks: char list) (map: char list StringNameTable.t): char list StringNameTable.t = 
+let update_map (list_of_states: char list) (list_of_stacks: char list) 
+(map: char list StringNameTable.t): char list StringNameTable.t = 
   let map = StringNameTable.add "states" list_of_states map in
   StringNameTable.add "stacks" list_of_stacks map   
 
 (*Test an automate with an char, return a char map if the run has succeed,
 else print a message and terminate the execution.*)
-let rec test_automate_with_char (transitions: transition list) (map: char list StringNameTable.t) (element: char): char list StringNameTable.t =
+let rec test_automate_with_char (transitions: automate_transition list)
+ (map: char list StringNameTable.t) (element: char): char list StringNameTable.t =
   match (transitions) with
   | [] -> 
       let error_code = 1 in
@@ -61,14 +63,15 @@ let rec test_automate_with_char (transitions: transition list) (map: char list S
 
 (*Test an automate with a word, return nothing if the run has succeed,
 else print a message and terminate the execution.*)        
-let rec test_automate_with_word (automate: automate) (map: char list StringNameTable.t) (word: string): unit = 
+let rec test_automate_with_word (automate: automate) (map: char list StringNameTable.t)
+ (word: string): unit = 
   print_actual_position word map;
   if String.length word > 0 then
     if List.length (StringNameTable.find "stacks" map) < 1 then
       print_string "Erreur: La pile est vide sans que l’entrée soit épuisée.\n" 
     else
       let subword = String.sub word 1 ((String.length word)-1) in
-      let map = test_automate_with_char (getTransitionsList automate) map (String.get word 0) in
+      let map = test_automate_with_char (get_transitions_list automate) map (String.get word 0) in
       test_automate_with_word automate map subword
   else
     if List.length (StringNameTable.find "stacks" map) > 0 then
@@ -80,6 +83,6 @@ let rec test_automate_with_word (automate: automate) (map: char list StringNameT
 let eval_automate (automate: automate) (word: string): unit = 
   let declarations = get_declaration automate in 
   let map = StringNameTable.empty in
-  let map = StringNameTable.add "states" [getInitials declarations 0] map in
-  let map = StringNameTable.add "stacks" [getInitials declarations 1] map in
+  let map = StringNameTable.add "states" [get_initials declarations 0] map in
+  let map = StringNameTable.add "stacks" [get_initials declarations 1] map in
   test_automate_with_word automate map word

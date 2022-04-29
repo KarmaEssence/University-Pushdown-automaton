@@ -10,7 +10,7 @@ open Gas6_utils
 (***********************************************************************)
 
 (*Print the automate transitions.*)
-let rec print_transitions (transitions: transition list) : unit = 
+let rec print_transitions (transitions: automate_transition list) : unit = 
   match transitions with
   | [] -> print_string "\n"
   | (a, b, c, d, e) :: sublist ->
@@ -22,7 +22,7 @@ let rec print_transitions (transitions: transition list) : unit =
   ;;  
 
 (*Print the automate declarations.*)  
-let print_declarations (declarations: declarations) : unit = 
+let print_declarations (declarations: automate_declarations) : unit = 
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
     print_string "Input symbols : ";

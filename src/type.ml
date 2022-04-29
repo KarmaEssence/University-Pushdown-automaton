@@ -3,35 +3,35 @@
 (***********************************************************************)
 
 (*Program action instructions.*)
-type action = 
+type program_action = 
 | Push of char
 | Pop
 | Change of char
 | Reject
 
 (*Program next instructions.*)
-type next = char * action list
+type program_next = char * program_action list
 
 (*Program top instructions.*)
-type top = 
-| Actions of char * action list
-| Nexts of char * next list
+type program_top = 
+| Actions of char * program_action list
+| Nexts of char * program_next list
 
 (*Program transition instructions.*)
 type program_transition = 
-| Next of char * next list
-| Top of char * top list
+| Next of char * program_next list
+| Top of char * program_top list
 
 (*Automate transition.*)
-type transition = char * char list * char * char * char list
+type automate_transition = char * char list * char * char * char list
 
 (*Automate declarations.*)
-type declarations = char list * char list * char list * char * char
+type automate_declarations = char list * char list * char list * char * char
 
 (*Automate.*)
 type automate = 
-| Automate of declarations * transition list 
-| Program of declarations * program_transition list
+| Automate of automate_declarations * automate_transition list 
+| Program of automate_declarations * program_transition list
 
 (*Char map.*)
 module NameTable = Map.Make(Char)
@@ -40,13 +40,13 @@ module NameTable = Map.Make(Char)
 module StringNameTable = Map.Make(String)
 
 (*To get declarations field from automate.*)
-let get_declaration (automate: automate): declarations = 
+let get_declaration (automate: automate): automate_declarations = 
   match automate with
   | Automate(declarations, _) -> declarations
   | Program(declarations, _) -> declarations
 
 (*To get input symbols, stack symbols or states field from declarations.*)
-let getSymbols (declarations: declarations) (flag: int): char list = 
+let get_symbols (declarations: automate_declarations) (flag: int): char list = 
   match declarations with
   | (inputs, stacks, states, _, _) ->
     if flag > 0 then
@@ -55,20 +55,20 @@ let getSymbols (declarations: declarations) (flag: int): char list =
     else inputs 
 
 (*To get initial state or stack field from declarations.*)
-let getInitials (declarations: declarations) (flag: int): char = 
+let get_initials (declarations: automate_declarations) (flag: int): char = 
   match declarations with
   | (_, _, _, state, stack) ->  
     if flag = 0 then state
     else stack      
 
 (*To get transitions field from automate.*)
-let getTransitionsList (automate: automate): transition list = 
+let get_transitions_list (automate: automate): automate_transition list = 
   match automate with
   | Automate(_, transitions) -> transitions    
   | _ -> [] 
 
 (*To get transitions field from automate.*)
-let getProgramTransitionsList (automate: automate): program_transition list = 
+let get_program_transitions_list (automate: automate): program_transition list = 
   match automate with
   | Program(_, transitions) -> transitions    
   | _ -> []   
