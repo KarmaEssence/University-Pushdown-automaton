@@ -12,13 +12,14 @@ open Gas6_utils
 (*Print the options.*)    
 let usage () =
   print_string "\n";
-  print_string "Options d'exécution du programme : \n";
+  print_string "Program options : \n";
   print_string "./main -eval--phase-1 <file> <mot> : évalutation de l'automate à l'aide d'un mot\n";
   print_string "./main -eval--phase-3 <file> <mot> : évalutation du programme à l'aide d'un mot\n";
   print_string "./main -print--phase-1 <file> : affichage de l'automate dans le terminal\n";
   print_string "./main -print--phase-3 <file> : affichage du programme dans le terminal\n";
   print_string "\n"
 
+(*Print automate declaration format.*)
 let automate_declaration_usage () =
   print_string "\n";
   print_string "input symbols: <input_symbol_1>, etc...\n";
@@ -28,6 +29,7 @@ let automate_declaration_usage () =
   print_string "initial stack: <initial_stack>\n";
   print_string "\n"
 
+(*Print automate format.*)  
 let automate_usage () = 
   print_string "\n";
   print_string "How to write automate in file ? (example of phase 1 format)\n";
@@ -38,6 +40,7 @@ let automate_usage () =
   print_string ((make_space 50 "") ^ ".\n" ^ (make_space 50 "") ^ ".\n" ^ (make_space 50 "") ^ ".\n");
   print_string "\n"
 
+(*Print program format.*)  
 let program_usage () = 
   print_string "\n";
   print_string "How to write automate in file ? (example of phase 3 format)\n";

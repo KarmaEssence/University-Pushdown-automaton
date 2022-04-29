@@ -2,6 +2,7 @@
 (*                             gas6_utils                              *)  
 (***********************************************************************)
 
+(*To make 'num' space.*)
 let rec make_space (num: int) (res: string): string = 
   if num < 1 then res
   else make_space (num - 1) (res ^ " ")

@@ -12,11 +12,11 @@ open Gas6_utils
 (*Print all stape of the execution of eval option.*)
 let print_actual_position (word: string) (map: char list StringNameTable.t): unit = 
   print_string "\n";
-  print_string ("Mot à lire : " ^ word ^ "\n");
-  print_string "Etat courant : ";
+  print_string ("Word to read: " ^ word ^ "\n");
+  print_string "Current state: ";
   let list_of_states = StringNameTable.find "states" map in
   print_string (Char.escaped (List.nth list_of_states ((List.length list_of_states)-1)) ^ "\n");
-  print_string "Elément dans la pile : ";
+  print_string "Stack elements : ";
   print_stringlist (StringNameTable.find "stacks" map) 0;
   print_string "\n"
   
@@ -33,7 +33,7 @@ let rec test_automate_with_char (transitions: automate_transition list)
   match (transitions) with
   | [] -> 
       let error_code = 1 in
-      print_string ("Erreur: Aucune transition n'est applicable pour la lettre " ^ Char.escaped element ^ ".\n");
+      print_string ("Error: none transition can be apply for the letter " ^ Char.escaped element ^ ".\n");
       exit error_code 
   | transition :: subtransitions ->
     match transition with
@@ -68,16 +68,16 @@ let rec test_automate_with_word (automate: automate) (map: char list StringNameT
   print_actual_position word map;
   if String.length word > 0 then
     if List.length (StringNameTable.find "stacks" map) < 1 then
-      print_string "Erreur: La pile est vide sans que l’entrée soit épuisée.\n" 
+      print_string "Error: the stack is empty without that the entry was exhausted.\n"  
     else
       let subword = String.sub word 1 ((String.length word)-1) in
       let map = test_automate_with_char (get_transitions_list automate) map (String.get word 0) in
       test_automate_with_word automate map subword
   else
     if List.length (StringNameTable.find "stacks" map) > 0 then
-      print_string "Erreur: L'entrée est épuisée sans que la pile soit vide.\n" 
+      print_string "Error: the entry is exhausting without that the stack is empty.\n" 
     else   
-      print_string "Analyse du mot réussie !\n"
+      print_string "Info: the Word has been successfull analysed!\n"
 
 (*To evaluate an automate.*)      
 let eval_automate (automate: automate) (word: string): unit = 

@@ -22,7 +22,7 @@ let rec check_transitions (transitions: automate_transition list) (map: string l
         let list_of_word = NameTable.find key map in
         if List.for_all (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && x <> value) list_of_word then
           let error_code = 1 in
-          print_string "L’automate doit être déterministe.\n";
+          print_string "Error: The product automate must be deterministic.\n";
           exit error_code
         else
           let list_of_word = List.rev(value :: List.rev list_of_word) in
@@ -48,11 +48,11 @@ let check_declarations (declarations: automate_declarations): unit =
         ()
       else
         let error_code = 1 in
-        print_string "Erreur : Le symbole de pile initial doit être dans l’ensemble des symboles de pile.\n";
+        print_string "Error: the initial stack symbol must be in symbols stack set.\n";
         exit error_code  
     else
       let error_code = 1 in
-      print_string "Erreur : L'état initial doit être un élément de l’ensemble des états.\n";
+      print_string "Error: the initial state symbol must be in states set.\n";
       exit error_code
 
 (*Allow to verify if automate has good format, else print accurately the error

@@ -31,7 +31,7 @@ let rec convert_actions (actionslist: program_action list) (stackslist: char lis
     | Pop ->
       if List.length stackslist > 0 then
         let error_code = 1 in
-        print_string "Erreur : Mauvais format de fichier, le pop doit etre la première instruction.\n";
+        print_string "Error: Wrong format of file, \"pop\" must be the first instruction.\n";
         exit error_code
       else    
         []
@@ -39,7 +39,7 @@ let rec convert_actions (actionslist: program_action list) (stackslist: char lis
       let newstackslist = state :: stackslist in
       convert_actions subactionslist newstackslist
     | Reject ->
-      print_string "Erreur : Fin du programme.\n";
+      print_string "Info : End of analysis.\n";
       exit 1
 
 (*Convert next instruction to automate actions per letter has readed.*)
