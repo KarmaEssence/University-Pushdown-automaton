@@ -6,6 +6,57 @@ open Gas6_utils
 (*****************************************************************************)
 
 (***********************************************************************)
+(*                            print usage                              *)  
+(***********************************************************************)
+
+(*Print the options.*)    
+let usage () =
+  print_string "\n";
+  print_string "Options d'exécution du programme : \n";
+  print_string "./main -eval--phase-1 <file> <mot> : évalutation de l'automate à l'aide d'un mot\n";
+  print_string "./main -eval--phase-3 <file> <mot> : évalutation du programme à l'aide d'un mot\n";
+  print_string "./main -print--phase-1 <file> : affichage de l'automate dans le terminal\n";
+  print_string "./main -print--phase-3 <file> : affichage du programme dans le terminal\n";
+  print_string "\n"
+
+let automate_declaration_usage () =
+  print_string "\n";
+  print_string "input symbols: <input_symbol_1>, etc...\n";
+  print_string "stack symbols: <stack_symbol_1>, etc...\n";
+  print_string "states: <states>, etc...\n";
+  print_string "initial state: <initial_state>\n";
+  print_string "initial stack: <initial_stack>\n";
+  print_string "\n"
+
+let automate_usage () = 
+  print_string "\n";
+  print_string "How to write automate in file ? (example of phase 1 format)\n";
+  automate_declaration_usage ();
+  print_string "transitions:\n";
+  print_string "\n";
+  print_string "(<current state>, <letter to read>, <current stack symbol>, <wanted state>, <other stacks symbols>)\n";
+  print_string ((make_space 50 "") ^ ".\n" ^ (make_space 50 "") ^ ".\n" ^ (make_space 50 "") ^ ".\n");
+  print_string "\n"
+
+let program_usage () = 
+  print_string "\n";
+  print_string "How to write automate in file ? (example of phase 3 format)\n";
+  automate_declaration_usage ();
+  print_string "program:\n";
+  print_string ((make_space 2 "") ^ "case state of\n");
+  print_string ((make_space 4 "") ^ "1: begin\n ");
+  print_string ((make_space 7 "") ^ "case next of\n");
+  print_string ((make_space 9 "") ^ "a: <actions> end\n");
+  print_string ((make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n");
+  print_string ((make_space 7 "") ^ "end\n");
+  print_string ((make_space 4 "") ^ "2: begin\n ");
+  print_string ((make_space 7 "") ^ "case top of\n");
+  print_string ((make_space 9 "") ^ "A: begin case next of a : <actions> end\n");
+  print_string ((make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n");
+  print_string ((make_space 7 "") ^ "end\n");
+  print_string "\n"
+
+(***********************************************************************)
 (*                              print_ast                              *)  
 (***********************************************************************)
 

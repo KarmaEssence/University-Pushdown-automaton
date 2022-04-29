@@ -27,17 +27,7 @@ let open_automaton_file (filename: string) (flag: int): automate =
   with Sys_error _ ->
     print_string (filename ^ ": no such file\n"); 
     exit 1    
-
-(*Print the options.*)    
-let usage () =
-  print_string "\n";
-  print_string "Options d'exécution du programme : \n";
-  print_string "./main -eval--phase-1 <file> <mot> : évalutation de l'automate à l'aide d'un mot\n";
-  print_string "./main -eval--phase-3 <file> <mot> : évalutation du programme à l'aide d'un mot\n";
-  print_string "./main -print--phase-1 <file> : affichage de l'automate dans le terminal\n";
-  print_string "./main -print--phase-3 <file> : affichage du programme dans le terminal\n";
-  print_string "\n"
-
+  
 let _ =
   match Sys.argv with
   | [|_;"-eval--phase-1";filename;argument|] ->
@@ -51,5 +41,7 @@ let _ =
     Print_ast.print_automate automate   
   | [|_;"-print--phase-3";filename|] ->  
     let automate = open_automaton_file filename 1 in
-    Print_ast.print_automate automate  
-  | _ -> usage ()
+    Print_ast.print_automate automate    
+  | [|_;"-format--phase-1"|] -> Print_ast.automate_usage ()
+  | [|_;"-format--phase-3"|] -> Print_ast.program_usage ()
+  | _ -> Print_ast.usage ()

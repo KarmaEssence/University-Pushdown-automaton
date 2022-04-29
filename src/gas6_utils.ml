@@ -2,6 +2,11 @@
 (*                             gas6_utils                              *)  
 (***********************************************************************)
 
+let rec make_space (num: int) (res: string): string = 
+  if num < 1 then res
+  else make_space (num - 1) (res ^ " ")
+
+
 (*Print the content of the list.*)
 let rec print_stringlist (list : char list) (flag : int): unit =
   match list with 
