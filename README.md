@@ -6,6 +6,7 @@
 1) To compile all file :
 
    - Move from the project root to src :
+        
         cd src
 
    - Then you will be able to compile with :    
