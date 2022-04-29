@@ -55,6 +55,7 @@ This section shows the repartition of all task :
    - Issue 4 has been done by Kévin
    - Issue 5 has been done by Kévin
    - Issue 6 has been done by Léo
+   - Issue 7 has been done by Léo and Kévin
 
 
 ## Contributors
