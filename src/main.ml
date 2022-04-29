@@ -1,7 +1,6 @@
 (*****************************************************************************)
 
-open Ast
-open Prog
+open Type
 
 (*****************************************************************************)
 
@@ -12,9 +11,9 @@ open Prog
 (*To get automate from the file.*) 
 let get_automation_in_file (lexbuf: Lexing.lexbuf) (flag: int): automate = 
   if flag = 0 then
-    Parser_ast.input Lexer_ast.main lexbuf
+    Parser.input Lexer.main lexbuf
   else
-    let program = Parser_prog.input Lexer_prog.main lexbuf in 
+    let program = Parser.input Lexer.main lexbuf in 
     Convert_prog_to_ast.convert_prog_to_ast program     
 
 (*To get automate from the file and check if he has the good format.*)    

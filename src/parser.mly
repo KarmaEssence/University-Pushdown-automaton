@@ -1,31 +1,30 @@
 %{
-open Prog
-open Ast
+open Type
 %}
 
-%token INPUT SYMBOLS STACK INITIAL STATES
-%token COMMA COLON PROGRAM BEGIN CASE STATE TOP NEXT OF END EOF
+%token INPUT SYMBOLS STACK INITIAL STATES STATE
+%token LPAREN RPAREN COMMA COLON SEMICOLON EOF
+%token PROGRAM BEGIN CASE TOP NEXT OF END
 %token PUSH POP CHANGE REJECT
 %token<char> ID 
 
-%start<Prog.program> input
-%type<Prog.program> program
-%type<Ast.declarations> declarations
+%start<Type.automate> input
+%type<Type.automate> automate
+%type<Type.declarations> declarations
 %type<char list> inputsymbols stacksymbols states
 %type<char> initialstate initialstack
-%type<Prog.transition list> transitions
-%type<Prog.transition> transition
-%type<Prog.top> top
-%type<Prog.next> next
-%type<Prog.action> action
-
+%type<Type.transition list> transitions
+%type<Type.transition> transition
+%type<Type.program_transition list> program_transitions
+%type<Type.program_transition> program_transition
 
 %%
 
-input: c = program EOF { c }
+input: c = automate EOF { c }
 
-program:
-a = declarations b = transitions {a, b}
+automate:
+a = declarations b = transitions {Automate(a, b)}
+| a = declarations b = program_transitions {Program(a, b)}
 
 declarations:
 a = inputsymbols b = stacksymbols c = states d = initialstate e = initialstack {a, b, c, d, e}
@@ -46,9 +45,15 @@ initialstack:
 INITIAL STACK COLON a = ID {a}
 
 transitions:
-PROGRAM COLON CASE STATE OF a = nonempty_list(transition){a}
+ID COLON a = list(transition) {a}
 
 transition:
+LPAREN a = ID COMMA b = list(ID) COMMA c = ID COMMA d = ID COMMA e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}
+
+program_transitions:
+PROGRAM COLON CASE STATE OF a = nonempty_list(program_transition){a}
+
+program_transition:
 a = ID COLON BEGIN CASE TOP OF b = nonempty_list(top) END {Top(a,b)}
 | a = ID COLON BEGIN CASE NEXT OF b = nonempty_list(next) END {Next(a,b)}
 

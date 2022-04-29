@@ -1,6 +1,6 @@
 (*****************************************************************************)
 
-open Ast
+open Type
 open Gas6_utils 
 
 (*****************************************************************************)
@@ -39,7 +39,8 @@ let print_declarations (declarations: declarations) : unit =
 (*Print the automate.*)   
 let print_automate (automate: automate) : unit =
   match automate with
-  | (declarations, transitions) ->
+  | Automate(declarations, transitions) ->
     print_declarations declarations;
     print_string "transitions :\n\n";
-    print_transitions transitions   
+    print_transitions transitions
+  | Program(_,_) -> ()     

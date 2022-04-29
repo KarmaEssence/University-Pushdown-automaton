@@ -1,5 +1,6 @@
 (*****************************************************************************)
 
+open Type
 open Gas6_utils 
 
 (*****************************************************************************)
@@ -19,7 +20,7 @@ let rec get_state_from_actions (numtransition: char) (states: char list) (action
       get_state_from_actions numtransition states subactions
 
 (*Convert actions instruction to automate actions.*)
-let rec convert_actions (actionslist: Prog.action list) (stackslist: char list): char list =
+let rec convert_actions (actionslist: action list) (stackslist: char list): char list =
   match actionslist with
   | [] -> List.rev stackslist
   | element :: subactionslist ->
@@ -42,7 +43,8 @@ let rec convert_actions (actionslist: Prog.action list) (stackslist: char list):
       exit 1
 
 (*Convert next instruction to automate actions per letter has readed.*)
-let rec convert_next (nextlist: Prog.next list) (numtransition: char) (stack_symbol: char) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list =
+let rec convert_next (nextlist: next list) (numtransition: char) (stack_symbol: char)
+ (states: char list) (newtransitions: transition list) : transition list =
   match nextlist with
   | [] -> List.rev newtransitions
   | element :: subnextlist ->
@@ -56,7 +58,8 @@ let rec convert_next (nextlist: Prog.next list) (numtransition: char) (stack_sym
       convert_next subnextlist numtransition stack_symbol states (transition :: newtransitions)
 
 (*Particular case of convertion, when all letter to read have share all stack symbols.*)      
-let rec convert_nexts (nextlist: Prog.next list) (numtransition: char) (stack_symbols: char list) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list =
+let rec convert_nexts (nextlist: next list) (numtransition: char) (stack_symbols: char list)
+ (states: char list) (newtransitions: transition list) : transition list =
   match stack_symbols with
   | [] -> newtransitions
   | element :: substack_symbols ->
@@ -64,7 +67,8 @@ let rec convert_nexts (nextlist: Prog.next list) (numtransition: char) (stack_sy
     convert_nexts nextlist numtransition substack_symbols states (newtransitions @ transitions)
 
 (*Convert top instruction to automate actions per letter has readed and the current stack symbols has used.*)
-let rec convert_top (toplist: Prog.top list) (numtransition: char) (stack_symbols: char list) (states: char list) (newtransitions: Ast.transition list) : Ast.transition list = 
+let rec convert_top (toplist: top list) (numtransition: char) (stack_symbols: char list)
+ (states: char list) (newtransitions: transition list) : transition list = 
   match toplist with
   | [] -> newtransitions
   | element :: subtoplist ->
@@ -80,13 +84,14 @@ let rec convert_top (toplist: Prog.top list) (numtransition: char) (stack_symbol
       convert_top subtoplist numtransition stack_symbols states (newtransitions @ transitions) 
 
 (*Convert instructions to automate transitions.*)      
-let rec convert_transitions (declarations: Ast.declarations) (transitions: Prog.transition list) (newtransitions: Ast.transition list) : Ast.transition list = 
+let rec convert_transitions (declarations: declarations) (transitions: program_transition list)
+ (newtransitions: transition list) : transition list = 
   match transitions with
   | [] -> newtransitions
   | element :: subtransitions ->
-    let initial_stack = Ast.getInitials declarations 1 in 
-    let stack_symbols = initial_stack_priority (Ast.getSymbols declarations 2) initial_stack [] in
-    let states = Ast.getSymbols declarations 1 in
+    let initial_stack = getInitials declarations 1 in 
+    let stack_symbols = initial_stack_priority (getSymbols declarations 2) initial_stack [] in
+    let states = getSymbols declarations 1 in
     match element with 
     | Next(numtransition, nextlist) ->
       let restransitions = convert_nexts nextlist numtransition stack_symbols states [] in
@@ -96,8 +101,8 @@ let rec convert_transitions (declarations: Ast.declarations) (transitions: Prog.
       convert_transitions declarations subtransitions (newtransitions @ restransitions)
 
 (*Convert instructions to automate.*)       
-let convert_prog_to_ast (program: Prog.program) : Ast.automate = 
-  match program with
-  | (declarations, transitions) ->
-    let newtransitions = convert_transitions declarations transitions [] in
-    (declarations, newtransitions)
+let convert_prog_to_ast (program: automate) : automate =
+  let declarations = get_declaration program in
+  let program_transitions = getProgramTransitionsList program in
+  let newtransitions = convert_transitions declarations program_transitions [] in
+  Automate(declarations, newtransitions)  

@@ -1,6 +1,6 @@
 (*****************************************************************************)
 
-open Ast
+open Type
 
 (*****************************************************************************)
 
@@ -59,8 +59,8 @@ let check_declarations (declarations: declarations): unit =
 and exit the program.*)
 let check_automate (automate: automate): unit = 
   match automate with
-  | (declarations, transitions) ->
+  | Automate(declarations, transitions) ->
     check_declarations declarations;
     let map = NameTable.empty in
     check_transitions transitions map 
-
+  | Program(_,_) -> ()

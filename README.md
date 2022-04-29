@@ -32,7 +32,7 @@ Currently implemented in this project :
    - Some options and makefile to compile all extensions. [Phase-1]
    - Checker for automatons. [Phase-2]
    - Read new format of file [Phase-3]
-   - Convert this format to automate format [Phase-3]
+   - Convert program format to automate format [Phase-3]
    
 
 ## RoadMap

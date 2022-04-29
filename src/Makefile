@@ -3,8 +3,8 @@ MENHIR=menhir
 OCAMLC=ocamlc
 OCAMLLEX=ocamllex
 
-SOURCES = ast.ml prog.ml gas6_utils.ml check_ast.ml print_ast.ml eval_ast.ml\
-convert_prog_to_ast.ml parser_ast.ml parser_prog.ml lexer_ast.ml lexer_prog.ml main.ml
+SOURCES = type.ml gas6_utils.ml check_ast.ml print_ast.ml eval_ast.ml\
+convert_prog_to_ast.ml parser.ml lexer.ml main.ml
 
 OBJECTS = $(SOURCES:.ml=.cmo)
 
@@ -12,10 +12,10 @@ OBJECTS = $(SOURCES:.ml=.cmo)
 
 all: main
 
-main: ast.cmo prog.cmo gas6_utils.cmo check_ast.cmi check_ast.cmo\
+main: type.cmo gas6_utils.cmo check_ast.cmi check_ast.cmo\
 print_ast.cmi print_ast.cmo eval_ast.cmi eval_ast.cmo\
-convert_prog_to_ast.cmi convert_prog_to_ast.cmo parser_ast.cmi parser_ast.cmo\
-parser_prog.cmi parser_prog.cmo lexer_ast.cmo lexer_prog.cmo main.cmo 
+convert_prog_to_ast.cmi convert_prog_to_ast.cmo parser.cmi parser.cmo\
+lexer.cmo main.cmo 
 	$(OCAMLC) -o $@ $(OBJECTS)
 
 %.cmo: %.ml
@@ -31,21 +31,15 @@ parser_prog.cmi parser_prog.cmo lexer_ast.cmo lexer_prog.cmo main.cmo
 %.ml: %.mll
 	$(OCAMLLEX) $<
 
-parser_ast.mly: ast.ml
+parser.mly: type.ml
 
-parser_prog.mly: prog.ml
-
-lexer_ast.mll: parser_ast.ml 
-
-lexer_prog.mll: parser_prog.ml
+lexer.mll: parser.mly
 
 clean:
-	rm -fr parser_ast.mli parser_ast.ml parser_prog.mli \
-	parser_prog.ml lexer_ast.ml *.cmo main *.cmi *~ *.automaton *.conflicts
+	rm -fr parser.mli parser.ml \
+	lexer_ast.ml *.cmo main *.cmi *~ *.automaton *.conflicts
 
 
-parser_ast.cmo: ast.cmo parser_ast.cmi
-parser_prog.cmo: prog.cmo parser_prog.cmi
-lexer_ast.cmo: parser_ast.cmo
-lexer_prog.cmo: parser_prog.cmo 
-main.cmo: parser_ast.cmo parser_prog.cmo lexer_ast.cmo lexer_prog.cmo
+parser.cmo: type.cmo parser.cmi
+lexer.cmo: parser.cmo
+main.cmo: parser.cmo lexer.cmo
