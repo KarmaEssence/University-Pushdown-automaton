@@ -7,11 +7,11 @@
 
    - Move from the project root to src :
         
-        cd src
+         cd src
 
    - Then you will be able to compile with :    
     
-        make
+         make
 
 2) To run with options :
 
