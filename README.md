@@ -4,6 +4,11 @@
 ## Compilation and Execution
 
 1) To compile all file :
+
+   - Move from the project root to src :
+        cd src
+
+   - Then you will be able to compile with :    
     
         make
 
@@ -13,9 +18,13 @@
 
             ./main -eval--phase-<1 or 3> <file> <word>
    
-    - printing of automaton : 
+   - printing of automaton : 
    
             ./main -print--phase-<1 or 3> <file>
+
+   - printing the format of automaton file:
+
+            ./main -format--phase-<1 or 3>          
 
 3) If you change code in a file, you need to do:
 
