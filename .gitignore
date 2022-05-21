@@ -1,3 +1,5 @@
+# all compiled files
+main
 *.annot
 *.cmo
 *.cma
@@ -7,6 +9,9 @@
 *.cmx
 *.cmxs
 *.cmxa
+*.automaton
+*.conflicts
+
 
 # ocamlbuild working directory
 _build/
@@ -27,3 +32,6 @@ setup.log
 
 # Local OPAM switch
 _opam/
+
+#generated ml files
+parser.ml
