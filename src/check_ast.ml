@@ -154,19 +154,23 @@ let display_error_declaration_data (declarations: automate_declarations) (flag: 
             ()
           else
             let error_code = 1 in
-            print_string "Error: the initial stack symbol must be in symbols stack set.\n";
+            print_string ("Error: the initial stack " ^ initial_stack ^ " must be in symbols stack set ([");
+            print_stringlist stack_symbols 3;
+            print_string "]).\n";
             exit error_code
         else
           let error_code = 1 in
-          print_string "Error: the initial state symbol must be in states set.\n";
-          exit error_code
+            print_string ("Error: the initial state " ^ initial_state ^ " must be in symbols state set ([");
+            print_stringlist states 3;
+            print_string "]).\n";
+            exit error_code
       else
         let error_code = 1 in
         let find_error = List.find(fun x -> String.length x <> 1) stack_symbols in
         print_string "Error: in stack symbols (declarations): [";
-        print_stringlist input_symbols 3; 
+        print_stringlist stack_symbols 3; 
         print_string ("]\nThe size of " ^ find_error ^ " must be one character (" 
-        ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ")\n");
+        ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ").\n");
         exit error_code    
     else
       let error_code = 1 in
@@ -174,7 +178,7 @@ let display_error_declaration_data (declarations: automate_declarations) (flag: 
       print_string "Error: in input symbols (declarations): [";
       print_stringlist input_symbols 3; 
       print_string ("]\nThe size of " ^ find_error ^ " must be one character (" 
-      ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ")\n");
+      ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ").\n");
       exit error_code    
 
 (*Allow to verify if declarations have good format, else print accurately the error
