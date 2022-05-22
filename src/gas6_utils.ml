@@ -9,7 +9,7 @@ let rec make_space (num: int) (res: string): string =
 
 
 (*Print the content of the list.*)
-let rec print_stringlist (list : char list) (flag : int): unit =
+let rec print_stringlist (list : string list) (flag : int): unit =
   match list with 
   | [] -> 
     if flag == 0 then
@@ -19,15 +19,15 @@ let rec print_stringlist (list : char list) (flag : int): unit =
   | element :: sublist -> 
       if flag = 3 then
         if List.length sublist = 0 then
-          let to_print = Char.escaped element in
+          let to_print = element in
           print_string (to_print);
           print_stringlist sublist flag
         else  
-          let to_print = Char.escaped element in
+          let to_print = element in
           print_string (to_print ^ ",");
           print_stringlist sublist flag
       else  
-        let to_print = Char.escaped element in
+        let to_print = element in
         print_string (to_print ^ " ");
         print_stringlist sublist flag
       
@@ -61,4 +61,6 @@ let rec initial_stack_priority (list: char list) (stack_symbol: char) (reslist: 
     else if List.length reslist = 0 then 
       initial_stack_priority sublist stack_symbol (element :: stack_symbol :: reslist)
     else 
-      initial_stack_priority sublist stack_symbol (element :: reslist) 
+      initial_stack_priority sublist stack_symbol (element :: reslist)
+
+let string_has_one_char (symbols: string list): bool = List.for_all(fun x -> String.length x == 1) symbols      

@@ -1,4 +1,4 @@
-(*****************************************************************************)
+(*(*****************************************************************************)
 
 open Type
 open Gas6_utils
@@ -85,4 +85,4 @@ let eval_automate (automate: automate) (word: string): unit =
   let map = StringNameTable.empty in
   let map = StringNameTable.add "states" [get_initials declarations 0] map in
   let map = StringNameTable.add "stacks" [get_initials declarations 1] map in
-  test_automate_with_word automate map word
+  test_automate_with_word automate map word*)

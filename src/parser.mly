@@ -6,13 +6,13 @@ open Type
 %token LPAREN RPAREN COMMA COLON SEMICOLON EOF
 %token PROGRAM BEGIN CASE TOP NEXT OF END
 %token PUSH POP CHANGE REJECT
-%token<char> ID 
+%token<string> ID 
 
 %start<automate> input
 %type<automate> automate
 %type<automate_declarations> automate_declarations
-%type<char list> input_symbols stack_symbols states
-%type<char> initial_state initial_stack
+%type<string list> input_symbols stack_symbols states
+%type<string> initial_state initial_stack
 %type<automate_transition list> automate_transitions
 %type<automate_transition> automate_transition
 %type<program_transition list> program_transitions

@@ -39,30 +39,30 @@ let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_tran
 
 (*Allow to verify if transitions have good format, else print accurately the error
 and exit the program.*)
-let rec check_transitions (transitions: automate_transition list) (map: string list NameTable.t): unit = 
+let rec check_transitions (transitions: automate_transition list) (map: string list StringNameTable.t): unit = 
   match transitions with
   | [] -> ()
   | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) :: subtransitions ->
-    let value = (Char.escaped current_state) ^ (Char.escaped wanted_state) ^ (Char.escaped stack_topop) in
-    if List.length listletter_toread > 0 && (NameTable.mem (List.hd listletter_toread) map) then
+    let value = (current_state) ^ (wanted_state) ^ (stack_topop) in
+    if List.length listletter_toread > 0 && (StringNameTable.mem (List.hd listletter_toread) map) then
       let key = List.hd listletter_toread in
-      let list_of_word = NameTable.find key map in
+      let list_of_word = StringNameTable.find key map in
       if List.exists (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && (String.sub x 1 1) <> (String.sub value 1 1)) list_of_word then
         let error_code = 1 in
         print_string "Error: The product automate must be deterministic.\n";
         exit error_code
       else
         let list_of_word = List.rev(value :: List.rev list_of_word) in
-        let map = NameTable.add key list_of_word map in
+        let map = StringNameTable.add key list_of_word map in
           check_transitions subtransitions map
     else
       if List.length listletter_toread > 0 then
         let key = List.hd listletter_toread in
-        let map = NameTable.add key [value] map in
+        let map = StringNameTable.add key [value] map in
         check_transitions subtransitions map
       else
-        let key = ' ' in
-        let map = NameTable.add key [value] map in
+        let key = " " in
+        let map = StringNameTable.add key [value] map in
         check_transitions subtransitions map
 
 (*Print the error with the transition which create this one.*)        
@@ -80,7 +80,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
               let error_code = 1 in
               print_string "Error: in transition: ";
               print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-              print_string ("The symbol to add in the stack " ^ Char.escaped find_error ^ " is not in list of stack symbols [");
+              print_string ("The symbol to add in the stack " ^ find_error ^ " is not in list of stack symbols [");
               print_stringlist (get_symbols declarations 2) 3;
               print_string "]\n";
               exit error_code 
@@ -89,7 +89,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
             let error_code = 1 in
             print_string "Error: in transition: ";
             print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-            print_string ("The top symbol of the stack " ^ Char.escaped stack_topop ^ " is not in list of stack symbols [");
+            print_string ("The top symbol of the stack " ^ stack_topop ^ " is not in list of stack symbols [");
             print_stringlist (get_symbols declarations 2) 3;
             print_string "]\n";
             exit error_code  
@@ -97,7 +97,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
           let error_code = 1 in
           print_string "Error: in transition: ";
           print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-          print_string ("The letter to read " ^ Char.escaped (List.hd listletter_toread) ^ " is not in list of input symbols [");
+          print_string ("The letter to read " ^ List.hd listletter_toread ^ " is not in list of input symbols [");
           print_stringlist (get_symbols declarations 0) 3;
           print_string "]\n";
           exit error_code   
@@ -105,7 +105,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
         let error_code = 1 in
         print_string "Error: in transition: ";
         print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-        print_string ("The end state " ^ Char.escaped wanted_state ^ " is not in list of state [");
+        print_string ("The end state " ^ wanted_state ^ " is not in list of state [");
         print_stringlist (get_symbols declarations 1) 3;
         print_string "]\n";
         exit error_code 
@@ -113,7 +113,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
       let error_code = 1 in
       print_string "Error: in transition: ";
       print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-      print_string ("The start state " ^ Char.escaped current_state ^ " is not in list of state [");
+      print_string ("The start state " ^ current_state ^ " is not in list of state [");
       print_stringlist (get_symbols declarations 1) 3;
       print_string "]\n";
       exit error_code
@@ -143,31 +143,67 @@ let rec check_transitions_data (declarations: automate_declarations) (transition
     else
       display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 0  
 
-(*Allow to verify if declarations have good format, else print accurately the error
-and exit the program.*)
-let check_declarations (declarations: automate_declarations): unit = 
+(*Print accurately the error and exit the program in case of wrong format of declaration.*)
+let display_error_declaration_data (declarations: automate_declarations) (flag: int): unit =
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
-    if List.mem initial_state states then
-      if List.mem initial_stack stack_symbols then
-        ()
+    if flag <> 0 then
+      if flag <> 1 then
+        if flag <> 2 then
+          if flag <> 3 then
+            ()
+          else
+            let error_code = 1 in
+            print_string "Error: the initial stack symbol must be in symbols stack set.\n";
+            exit error_code
+        else
+          let error_code = 1 in
+          print_string "Error: the initial state symbol must be in states set.\n";
+          exit error_code
       else
         let error_code = 1 in
-        print_string "Error: the initial stack symbol must be in symbols stack set.\n";
-        exit error_code  
+        let find_error = List.find(fun x -> String.length x <> 1) stack_symbols in
+        print_string "Error: in stack symbols (declarations): [";
+        print_stringlist input_symbols 3; 
+        print_string ("]\nThe size of " ^ find_error ^ " must be one character (" 
+        ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ")\n");
+        exit error_code    
     else
       let error_code = 1 in
-      print_string "Error: the initial state symbol must be in states set.\n";
-      exit error_code      
+      let find_error = List.find(fun x -> String.length x <> 1) input_symbols in
+      print_string "Error: in input symbols (declarations): [";
+      print_stringlist input_symbols 3; 
+      print_string ("]\nThe size of " ^ find_error ^ " must be one character (" 
+      ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ")\n");
+      exit error_code    
+
+(*Allow to verify if declarations have good format, else print accurately the error
+and exit the program.*)
+let check_declarations_data (declarations: automate_declarations): unit = 
+  match declarations with
+  | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
+    if string_has_one_char input_symbols then
+      if string_has_one_char stack_symbols then
+        if List.mem initial_state states then
+          if List.mem initial_stack stack_symbols then
+            ()
+          else
+            display_error_declaration_data (input_symbols, stack_symbols, states, initial_state, initial_stack) 3    
+        else
+          display_error_declaration_data (input_symbols, stack_symbols, states, initial_state, initial_stack) 2    
+      else  
+        display_error_declaration_data (input_symbols, stack_symbols, states, initial_state, initial_stack) 1
+    else
+      display_error_declaration_data (input_symbols, stack_symbols, states, initial_state, initial_stack) 0   
 
 (*Allow to verify if automate has good format, else print accurately the error
 and exit the program.*)
 let check_automate (automate: automate): unit = 
   match automate with
   | Automate(declarations, transitions) ->
-    check_declarations declarations;
+    check_declarations_data declarations;
     check_transitions_data declarations transitions;
-    let map = NameTable.empty in
+    let map = StringNameTable.empty in
     check_transitions transitions map; 
     check_transitions_in_case_of_epsilon transitions transitions
   | Program(_,_) -> ()

@@ -29,6 +29,6 @@ rule main = parse
   | "next"      { NEXT}
   | "of"        { OF}
   | "end"       { END}
-  | ident_char+	{ ID (Lexing.lexeme_char lexbuf 0) }
+  | ident_char+	{ ID (Lexing.lexeme lexbuf) }
   | eof			{ EOF }
   | _			{ failwith "unexpected character" }

@@ -4,29 +4,29 @@
 
 (*Program action instructions.*)
 type program_action = 
-| Push of char
+| Push of string
 | Pop
-| Change of char
+| Change of string
 | Reject
 
 (*Program next instructions.*)
-type program_next = char * program_action list
+type program_next = string * program_action list
 
 (*Program top instructions.*)
 type program_top = 
-| Actions of char * program_action list
-| Nexts of char * program_next list
+| Actions of string * program_action list
+| Nexts of string * program_next list
 
 (*Program transition instructions.*)
 type program_transition = 
-| Next of char * program_next list
-| Top of char * program_top list
+| Next of string * program_next list
+| Top of string * program_top list
 
 (*Automate transition.*)
-type automate_transition = char * char list * char * char * char list
+type automate_transition = string * string list * string * string * string list
 
 (*Automate declarations.*)
-type automate_declarations = char list * char list * char list * char * char
+type automate_declarations = string list * string list * string list * string * string
 
 (*Automate.*)
 type automate = 
@@ -46,7 +46,7 @@ let get_declaration (automate: automate): automate_declarations =
   | Program(declarations, _) -> declarations
 
 (*To get input symbols, stack symbols or states field from declarations.*)
-let get_symbols (declarations: automate_declarations) (flag: int): char list = 
+let get_symbols (declarations: automate_declarations) (flag: int): string list = 
   match declarations with
   | (inputs, stacks, states, _, _) ->
     if flag > 0 then
@@ -55,7 +55,7 @@ let get_symbols (declarations: automate_declarations) (flag: int): char list =
     else inputs 
 
 (*To get initial state or stack field from declarations.*)
-let get_initials (declarations: automate_declarations) (flag: int): char = 
+let get_initials (declarations: automate_declarations) (flag: int): string = 
   match declarations with
   | (_, _, _, state, stack) ->  
     if flag = 0 then state
@@ -71,7 +71,7 @@ let get_transitions_list (automate: automate): automate_transition list =
 let get_program_transitions_list (automate: automate): program_transition list = 
   match automate with
   | Program(_, transitions) -> transitions    
-  | _ -> []   
+  | _ -> [] 
 
 
   
