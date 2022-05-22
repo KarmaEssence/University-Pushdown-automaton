@@ -10,6 +10,7 @@ open Gas6_utils
 (*                              check_ast                              *)  
 (***********************************************************************)
 
+(*Allow to verify if one transition of list is correct with other*)
 let rec check_list (transition_to_read: automate_transition) (transitions: automate_transition list): bool =
   match transition_to_read with
   | (x_current_state, x_listletter_toread, x_stack_topop, _, _) ->
@@ -23,6 +24,7 @@ let rec check_list (transition_to_read: automate_transition) (transitions: autom
       else      
         check_list transition_to_read subtransitions
 
+(*Allow to verify if all transitions of list is correct with other*)        
 let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_transition list) 
 (transitions: automate_transition list): unit = 
   match transitions_to_read with
@@ -63,6 +65,7 @@ let rec check_transitions (transitions: automate_transition list) (map: string l
         let map = NameTable.add key [value] map in
         check_transitions subtransitions map
 
+(*Print the error with the transition which create this one.*)        
 let display_error_transition_data (declarations: automate_declarations) (transition: automate_transition) (flag: int): unit =
   match transition with
   | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) ->
@@ -115,6 +118,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
       print_string "]\n";
       exit error_code
 
+(*Check all symbol inside all transitions?*)      
 let rec check_transitions_data (declarations: automate_declarations) (transitions: automate_transition list): unit =
   match transitions with
   | [] -> ()
