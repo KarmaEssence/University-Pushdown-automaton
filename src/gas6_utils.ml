@@ -63,4 +63,5 @@ let rec initial_stack_priority (list: char list) (stack_symbol: char) (reslist: 
     else 
       initial_stack_priority sublist stack_symbol (element :: reslist)
 
+(*Allow to verify if all string of the list are a length superior or egal to one.*)      
 let string_has_one_char (symbols: string list): bool = List.for_all(fun x -> String.length x == 1) symbols      

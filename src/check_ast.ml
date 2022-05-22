@@ -47,7 +47,7 @@ let rec check_transitions (transitions: automate_transition list) (map: string l
     if List.length listletter_toread > 0 && (StringNameTable.mem (List.hd listletter_toread) map) then
       let key = List.hd listletter_toread in
       let list_of_word = StringNameTable.find key map in
-      if List.exists (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && (String.sub x 1 1) <> (String.sub value 1 1)) list_of_word then
+      if List.exists (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && (String.sub x 2 1) = (String.sub value 2 1)) list_of_word then
         let error_code = 1 in
         print_string "Error: The product automate must be deterministic.\n";
         exit error_code
