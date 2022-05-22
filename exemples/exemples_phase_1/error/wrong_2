@@ -1,8 +1,8 @@
 input symbols: a, b, c
-stack symbols: A, B, Z
+stack symbols: A, B, C, Z
 states: 1, 2
-initial state: 10
-intial stack: d
+initial state: 1
+initial stack: X
 
 transitions:
 
