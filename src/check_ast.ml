@@ -1,6 +1,8 @@
 (*****************************************************************************)
 
 open Type
+open Print_ast
+open Gas6_utils 
 
 (*****************************************************************************)
 
@@ -38,30 +40,53 @@ and exit the program.*)
 let rec check_transitions (transitions: automate_transition list) (map: string list NameTable.t): unit = 
   match transitions with
   | [] -> ()
-  | transition :: subtransitions ->
-    match transition with
-    | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) ->
-      let value = (Char.escaped current_state) ^ (Char.escaped wanted_state) ^ (Char.escaped stack_topop) in
-      if List.length listletter_toread > 0 && (NameTable.mem (List.hd listletter_toread) map) then
-        let key = List.hd listletter_toread in
-        let list_of_word = NameTable.find key map in
-        if List.exists (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && (String.sub x 1 1) <> (String.sub value 1 1)) list_of_word then
-          let error_code = 1 in
-          print_string "Error: The product automate must be deterministic.\n";
-          exit error_code
-        else
-          let list_of_word = List.rev(value :: List.rev list_of_word) in
-          let map = NameTable.add key list_of_word map in
-            check_transitions subtransitions map
+  | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) :: subtransitions ->
+    let value = (Char.escaped current_state) ^ (Char.escaped wanted_state) ^ (Char.escaped stack_topop) in
+    if List.length listletter_toread > 0 && (NameTable.mem (List.hd listletter_toread) map) then
+      let key = List.hd listletter_toread in
+      let list_of_word = NameTable.find key map in
+      if List.exists (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && (String.sub x 1 1) <> (String.sub value 1 1)) list_of_word then
+        let error_code = 1 in
+        print_string "Error: The product automate must be deterministic.\n";
+        exit error_code
       else
-        if List.length listletter_toread > 0 then
-          let key = List.hd listletter_toread in
-          let map = NameTable.add key [value] map in
+        let list_of_word = List.rev(value :: List.rev list_of_word) in
+        let map = NameTable.add key list_of_word map in
           check_transitions subtransitions map
-        else
-          let key = ' ' in
-          let map = NameTable.add key [value] map in
-          check_transitions subtransitions map
+    else
+      if List.length listletter_toread > 0 then
+        let key = List.hd listletter_toread in
+        let map = NameTable.add key [value] map in
+        check_transitions subtransitions map
+      else
+        let key = ' ' in
+        let map = NameTable.add key [value] map in
+        check_transitions subtransitions map
+
+let display_error_transition_data (declarations: automate_declarations) (transition: automate_transition) (flag: int): unit =
+  match transition with
+  | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) ->
+    if flag <> 0 then
+      print_string "leo is here !"
+    else  
+      print_string "Error: in transition: ";
+      print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
+      print_string ("The state " ^ Char.escaped current_state ^ " is not in list of state [");
+      print_stringlist (get_symbols declarations 1) 3;
+      print_string "]\n";
+      exit 1
+
+let rec check_transitions_data (declarations: automate_declarations) (transitions: automate_transition list): unit =
+  match transitions with
+  | [] -> ()
+  | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) :: subtransitions ->
+    let input_symbols = (get_symbols declarations 0) in 
+    let states = (get_symbols declarations 1) in
+    let input_stacks = (get_symbols declarations 2) in
+    if List.mem current_state states then
+      check_transitions_data declarations subtransitions
+    else
+      display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 0  
 
 (*Allow to verify if declarations have good format, else print accurately the error
 and exit the program.*)
@@ -78,7 +103,7 @@ let check_declarations (declarations: automate_declarations): unit =
     else
       let error_code = 1 in
       print_string "Error: the initial state symbol must be in states set.\n";
-      exit error_code
+      exit error_code      
 
 (*Allow to verify if automate has good format, else print accurately the error
 and exit the program.*)
@@ -86,6 +111,7 @@ let check_automate (automate: automate): unit =
   match automate with
   | Automate(declarations, transitions) ->
     check_declarations declarations;
+    check_transitions_data declarations transitions;
     let map = NameTable.empty in
     check_transitions transitions map; 
     check_transitions_in_case_of_epsilon transitions transitions

@@ -17,8 +17,20 @@ let rec print_stringlist (list : char list) (flag : int): unit =
     else
       print_string ""  
   | element :: sublist -> 
-      print_string (Char.escaped element ^ " ");
-      print_stringlist sublist flag
+      if flag = 3 then
+        if List.length sublist = 0 then
+          let to_print = Char.escaped element in
+          print_string (to_print);
+          print_stringlist sublist flag
+        else  
+          let to_print = Char.escaped element in
+          print_string (to_print ^ ",");
+          print_stringlist sublist flag
+      else  
+        let to_print = Char.escaped element in
+        print_string (to_print ^ " ");
+        print_stringlist sublist flag
+      
 
 (*Return the list without the last word.*)      
 let list_without_last_word (list : char list): char list = 
