@@ -67,14 +67,53 @@ let display_error_transition_data (declarations: automate_declarations) (transit
   match transition with
   | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) ->
     if flag <> 0 then
-      print_string "leo is here !"
+      if flag <> 1 then
+        if flag <> 2 then
+          if flag <> 3 then
+            if flag <> 4 then
+            ()
+            else
+              let find_error = List.find (fun x -> not (List.mem x (get_symbols declarations 2))) list_stack_topush in
+              let error_code = 1 in
+              print_string "Error: in transition: ";
+              print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
+              print_string ("The symbol to add in the stack " ^ Char.escaped find_error ^ " is not in list of stack symbols [");
+              print_stringlist (get_symbols declarations 2) 3;
+              print_string "]\n";
+              exit error_code 
+
+          else
+            let error_code = 1 in
+            print_string "Error: in transition: ";
+            print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
+            print_string ("The top symbol of the stack " ^ Char.escaped stack_topop ^ " is not in list of stack symbols [");
+            print_stringlist (get_symbols declarations 2) 3;
+            print_string "]\n";
+            exit error_code  
+        else
+          let error_code = 1 in
+          print_string "Error: in transition: ";
+          print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
+          print_string ("The letter to read " ^ Char.escaped (List.hd listletter_toread) ^ " is not in list of input symbols [");
+          print_stringlist (get_symbols declarations 0) 3;
+          print_string "]\n";
+          exit error_code   
+      else 
+        let error_code = 1 in
+        print_string "Error: in transition: ";
+        print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
+        print_string ("The end state " ^ Char.escaped wanted_state ^ " is not in list of state [");
+        print_stringlist (get_symbols declarations 1) 3;
+        print_string "]\n";
+        exit error_code 
     else  
+      let error_code = 1 in
       print_string "Error: in transition: ";
       print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-      print_string ("The state " ^ Char.escaped current_state ^ " is not in list of state [");
+      print_string ("The start state " ^ Char.escaped current_state ^ " is not in list of state [");
       print_stringlist (get_symbols declarations 1) 3;
       print_string "]\n";
-      exit 1
+      exit error_code
 
 let rec check_transitions_data (declarations: automate_declarations) (transitions: automate_transition list): unit =
   match transitions with
@@ -84,7 +123,19 @@ let rec check_transitions_data (declarations: automate_declarations) (transition
     let states = (get_symbols declarations 1) in
     let input_stacks = (get_symbols declarations 2) in
     if List.mem current_state states then
-      check_transitions_data declarations subtransitions
+      if List.mem wanted_state states then
+        if List.length listletter_toread == 0 || (List.mem (List.hd listletter_toread) input_symbols) then
+          if List.mem stack_topop input_stacks then
+            if List.for_all(fun x -> List.mem x input_stacks) list_stack_topush then
+              check_transitions_data declarations subtransitions
+            else
+              display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 4  
+          else
+            display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 3  
+        else   
+          display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 2
+      else
+        display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 1
     else
       display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 0  
 
