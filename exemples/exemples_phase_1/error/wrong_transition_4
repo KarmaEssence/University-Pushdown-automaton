@@ -10,4 +10,4 @@ transitions:
 (1,b,Z,1,Z;B)
 (1,c,Z,2,Z)
 
-(1,a,Z,100,Z;A)
+(1,a,Q,1,Z;A)
