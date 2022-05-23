@@ -37,19 +37,29 @@ let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_tran
       print_string "Error: The product automate must be deterministic.\n";
       exit error_code                     
 
+
+let get_string_from_list (listletter_toread: string list): string =
+  if List.length listletter_toread == 0 then "" else List.hd listletter_toread  
+
 (*Allow to verify if transitions have good format, else print accurately the error
 and exit the program.*)
 let rec check_transitions (transitions: automate_transition list) (map: (string list) list StringNameTable.t): unit = 
   match transitions with
   | [] -> ()
   | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) :: subtransitions ->
-    let value = [current_state;wanted_state;stack_topop] in
+    let value = [current_state;get_string_from_list listletter_toread;stack_topop;wanted_state] in
+    let value = value @ list_stack_topush in
     if List.length listletter_toread > 0 && (StringNameTable.mem (List.hd(listletter_toread)) map) then
       let key = List.hd listletter_toread in
       let list_of_word = StringNameTable.find key map in
       if List.exists (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word then
         let error_code = 1 in
         print_string "Error: The product automate must be deterministic.\n";
+        print_string "Reason: There are two transitions for a same letter and a same symbol in the top of the stack.\n\n";
+        print_string "1) ";
+        print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
+        print_string "2) ";
+        print_stringlist (List.find (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word) 0;
         exit error_code
       else
         let list_of_word = List.rev(value :: List.rev list_of_word) in
