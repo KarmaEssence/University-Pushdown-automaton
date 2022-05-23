@@ -30,12 +30,12 @@ let open_automaton_file (filename: string) (flag: int): automate =
   
 let _ =
   match Sys.argv with
-  (*| [|_;"-eval--phase-1";filename;argument|] ->
+  | [|_;"-eval--phase-1";filename;argument|] ->
     let automate = open_automaton_file filename 0 in
     Eval_ast.eval_automate automate argument
   | [|_;"-eval--phase-3";filename;argument|] ->
     let automate = open_automaton_file filename 1 in
-    Eval_ast.eval_automate automate argument             4 *)   
+    Eval_ast.eval_automate automate argument   
   | [|_;"-print--phase-1";filename|] ->  
     let automate = open_automaton_file filename 0 in
     Print_ast.print_automate automate   
