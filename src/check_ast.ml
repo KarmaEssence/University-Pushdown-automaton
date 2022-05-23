@@ -39,15 +39,15 @@ let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_tran
 
 (*Allow to verify if transitions have good format, else print accurately the error
 and exit the program.*)
-let rec check_transitions (transitions: automate_transition list) (map: string list StringNameTable.t): unit = 
+let rec check_transitions (transitions: automate_transition list) (map: (string list) list StringNameTable.t): unit = 
   match transitions with
   | [] -> ()
   | (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) :: subtransitions ->
-    let value = (current_state) ^ (wanted_state) ^ (stack_topop) in
-    if List.length listletter_toread > 0 && (StringNameTable.mem (List.hd listletter_toread) map) then
+    let value = [current_state;wanted_state;stack_topop] in
+    if List.length listletter_toread > 0 && (StringNameTable.mem (List.hd(listletter_toread)) map) then
       let key = List.hd listletter_toread in
       let list_of_word = StringNameTable.find key map in
-      if List.exists (fun x-> (String.sub x 0 1) = (String.sub value 0 1) && (String.sub x 2 1) = (String.sub value 2 1)) list_of_word then
+      if List.exists (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word then
         let error_code = 1 in
         print_string "Error: The product automate must be deterministic.\n";
         exit error_code

@@ -105,4 +105,7 @@ let convert_prog_to_ast (program: automate) : automate =
   let declarations = get_declaration program in
   let program_transitions = get_program_transitions_list program in
   let newtransitions = convert_transitions declarations program_transitions [] in
+  let auto = 
   Automate(declarations, newtransitions) 
+  in Print_ast.print_automate auto;
+  auto
