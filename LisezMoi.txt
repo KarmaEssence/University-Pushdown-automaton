@@ -1,0 +1,68 @@
+(***********************************************************************)
+(*                      Compilation et Execution                       *)  
+(***********************************************************************)
+
+1) Pour compiler tous les fichiers :
+
+   - Déplacez-vous à partir de la racine du projet dans le répertoire src:
+        
+         cd src
+
+   - Maintenant vous pouvez compiler avec la commande :    
+    
+         make
+
+2) Pour executer avec des options :
+
+   - Evaluation de l'automate : 
+
+            ./main -eval--phase-<1 or 3> <file> <word>
+   
+   - Affichage de l'automate : 
+   
+            ./main -print--phase-<1 or 3> <file>
+
+   - Affichage du format du fichier de l'automate:
+
+            ./main -format--phase-<1 or 3>          
+
+3) Si vous voulez changer du code dans un des fichiers, n'oubliez pas de faire :
+
+        make clean
+   
+   Avant d'essayer de faire la commande make.
+
+(***********************************************************************)
+(*                          Fonctionnalités                            *)  
+(***********************************************************************)
+
+Ce qui est implémenté dans le projet :
+
+    - Un lexer et un parser pour lire le fichier contenant un automate. [Phase-1]
+    - Affichage et évaluation d'un automate. [Phase-1]
+    - Ajout d'option et d'un makefile pour compiler toutes les extensions du projet. [Phase-1]
+    - Vérification de l'automate (déterministe, données cohérentes, voir pdf du projet). [Phase-2]
+    - Modification du lexer et du parser initial pour lui un programme. [Phase-3]
+    - Convertisseur de programme à automate. [Phase-3]
+
+(***********************************************************************)
+(*                  Réalisation et répartition des taches              *)  
+(***********************************************************************) 
+
+Répartitions des taches (voir la section "Issues" sur gitlab):
+
+   - Issue 1 has been done by Léo
+   - Issue 2 has been done by Kévin
+   - Issue 3 has been done by Léo
+   - Issue 4 has been done by Kévin
+   - Issue 5 has been done by Kévin
+   - Issue 6 has been done by Léo
+   - Issue 7 has been done by Léo and Kévin
+
+(***********************************************************************)
+(*                              Contributeur                           *)  
+(***********************************************************************) 
+
+- [Le Corre Leo] : leo.le-corre@etu.u-paris.fr (numéro d'étudiant : 21951620)
+- [Quach Kevin] : kevin.quach@etu.u-paris.fr (numéro d'étudiant : 71800727)
+
