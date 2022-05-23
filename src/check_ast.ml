@@ -10,6 +10,20 @@ open Gas6_utils
 (*                              check_ast                              *)  
 (***********************************************************************)
 
+(*Get the conflict between epsilon and a normal transition*)
+let rec get_transition_conflict (transition_to_read: automate_transition) (transitions: automate_transition list): automate_transition =
+  match transition_to_read with
+  | (x_current_state, x_listletter_toread, x_stack_topop, _, _) ->
+    match transitions with
+    | [] -> ("", [], "", "", [])
+    | (y_current_state, y_listletter_toread, y_stack_topop, y_wanted_state, y_actions) :: subtransitions ->
+      if x_current_state = y_current_state && x_stack_topop = y_stack_topop 
+        && ((List.length x_listletter_toread = 0 && List.length y_listletter_toread > 0) ||
+            (List.length y_listletter_toread = 0 && List.length x_listletter_toread > 0)) then
+        (y_current_state, y_listletter_toread, y_stack_topop, y_wanted_state, y_actions)     
+      else      
+        get_transition_conflict transition_to_read subtransitions
+
 (*Allow to verify if one transition of list is correct with other*)
 let rec check_list (transition_to_read: automate_transition) (transitions: automate_transition list): bool =
   match transition_to_read with
@@ -35,11 +49,13 @@ let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_tran
     else
       let error_code = 1 in
       print_string "Error: The product automate must be deterministic.\n";
+      print_string "Reason: There are two transitions, one is letter and an other 
+      is epsilon to read with the same symbol in the top of the stack.\n\n";
+      print_string "1) ";
+      print_transitions [transition];
+      print_string "2) ";
+      print_transitions [get_transition_conflict transition transitions];
       exit error_code                     
-
-
-let get_string_from_list (listletter_toread: string list): string =
-  if List.length listletter_toread == 0 then "" else List.hd listletter_toread  
 
 (*Allow to verify if transitions have good format, else print accurately the error
 and exit the program.*)

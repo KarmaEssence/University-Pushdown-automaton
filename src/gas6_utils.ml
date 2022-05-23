@@ -65,3 +65,7 @@ let rec initial_stack_priority (list: string list) (stack_symbol: string) (resli
 
 (*Allow to verify if all string of the list are a length superior or egal to one.*)      
 let string_has_one_char (symbols: string list): bool = List.for_all(fun x -> String.length x == 1) symbols      
+
+(*Get only the first element from the list if this one exist, else return ""*)
+let get_string_from_list (list: string list): string =
+  if List.length list == 0 then "" else List.hd list 
