@@ -20,8 +20,8 @@ let get_automation_in_file (lexbuf: Lexing.lexbuf) (flag: int): automate =
 let open_automaton_file (filename: string) (flag: int): automate = 
   try
     let lexbuf = Lexing.from_channel (open_in filename) in
-    let automaton = get_automation_in_file lexbuf flag in 
-    Check_ast.check_automate automaton; 
+    let automaton = get_automation_in_file lexbuf flag in  
+    Check_ast.check_automate automaton;
     automaton
 
   with Sys_error _ ->

@@ -76,6 +76,7 @@ let rec check_transitions (transitions: automate_transition list) (map: (string 
         print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
         print_string "2) ";
         print_stringlist (List.find (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word) 0;
+        print_string "\n";
         exit error_code
       else
         let list_of_word = List.rev(value :: List.rev list_of_word) in
@@ -243,9 +244,18 @@ and exit the program.*)
 let check_automate (automate: automate): unit = 
   match automate with
   | Automate(declarations, transitions) ->
-    check_declarations_data declarations;
-    check_transitions_data declarations transitions;
-    let map = StringNameTable.empty in
-    check_transitions transitions map; 
-    check_transitions_in_case_of_epsilon transitions transitions
-  | Program(_,_) -> ()
+    if List.length transitions == 0 then
+      let error_code = 1 in
+      print_string "Error: You choose a wrong option for a selected file.\n";
+      exit error_code 
+    else
+      check_declarations_data declarations;
+      check_transitions_data declarations transitions;
+      let map = StringNameTable.empty in
+      check_transitions transitions map; 
+      check_transitions_in_case_of_epsilon transitions transitions
+      
+  | Program(_,_) -> 
+    let error_code = 1 in
+    print_string "Error: You choose a wrong option for a selected file.\n";
+    exit error_code 
