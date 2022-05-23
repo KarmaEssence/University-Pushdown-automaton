@@ -33,11 +33,11 @@ let rec print_stringlist (list : string list) (flag : int): unit =
       
 
 (*Return the list without the last word.*)      
-let list_without_last_word (list : char list): char list = 
+let list_without_last_word (list : string list): string list = 
   List.rev (List.tl (List.rev list)) 
   
 (*Clear the list from all digit (state).*)  
-let rec list_without_state (states: char list) (actions: char list) (newactions: char list): char list =
+let rec list_without_state (states: string list) (actions: string list) (newactions: string list): string list =
   match actions with
   | [] -> List.rev newactions
   | element :: subactions ->
@@ -47,12 +47,12 @@ let rec list_without_state (states: char list) (actions: char list) (newactions:
       list_without_state states subactions (element :: newactions) 
 
 (*If the list is not empty, include the initial stack symbol at the begin of the list.*)      
-let rec add_stack_symbol (actions: char list) (stack_symbol: char) : char list = 
+let rec add_stack_symbol (actions: string list) (stack_symbol: string) : string list = 
   if List.length actions > 0 then stack_symbol :: actions
   else []     
   
 (*Sort the list in function of the initial stack symbol.*)  
-let rec initial_stack_priority (list: char list) (stack_symbol: char) (reslist: char list): char list = 
+let rec initial_stack_priority (list: string list) (stack_symbol: string) (reslist: string list): string list = 
   match list with
   | [] -> List.rev reslist
   | element :: sublist ->
