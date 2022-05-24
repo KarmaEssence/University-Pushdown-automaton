@@ -18,6 +18,7 @@ let rec get_state_from_actions (numtransition: string) (states: string list) (ac
       element
     else 
       get_state_from_actions numtransition states subactions
+;;      
 
 (*Convert actions instruction to automate actions.*)
 let rec convert_actions (actionslist: program_action list) (stackslist: string list): string list =
@@ -41,6 +42,7 @@ let rec convert_actions (actionslist: program_action list) (stackslist: string l
     | Reject ->
       let newstackslist = "REJECT" :: stackslist in
       convert_actions subactionslist newstackslist
+;;
 
 (*Convert next instruction to automate actions per letter has readed.*)
 let rec convert_next (nextlist: program_next list) (numtransition: string) (stack_symbol: string)
@@ -56,6 +58,7 @@ let rec convert_next (nextlist: program_next list) (numtransition: string) (stac
       let list_to_read = [letter_to_read] in
       let transition = (numtransition, list_to_read, stack_symbol, newstate, actions) in
       convert_next subnextlist numtransition stack_symbol states (transition :: newtransitions)
+;;
 
 (*Particular case of convertion, when all letter to read have share all stack symbols.*)      
 let rec convert_nexts (nextlist: program_next list) (numtransition: string) (stack_symbols: string list)
@@ -65,6 +68,7 @@ let rec convert_nexts (nextlist: program_next list) (numtransition: string) (sta
   | element :: substack_symbols ->
     let transitions = convert_next nextlist numtransition element states [] in
     convert_nexts nextlist numtransition substack_symbols states (newtransitions @ transitions)
+;;
 
 (*Convert top instruction to automate actions per letter has readed and the current stack symbols has used.*)
 let rec convert_top (toplist: program_top list) (numtransition: string) (stack_symbols: string list)
@@ -82,7 +86,8 @@ let rec convert_top (toplist: program_top list) (numtransition: string) (stack_s
     | Nexts(stack_symbol, nextlist) ->
       let transitions = convert_next nextlist numtransition stack_symbol states [] in 
       convert_top subtoplist numtransition stack_symbols states (newtransitions @ transitions)
-            
+;;
+
 (*Convert instructions to automate transitions.*)      
 let rec convert_transitions (declarations: automate_declarations) (transitions: program_transition list)
  (newtransitions: automate_transition list) : automate_transition list = 
@@ -99,6 +104,7 @@ let rec convert_transitions (declarations: automate_declarations) (transitions: 
     | Top(numtransition, toplist) ->
       let restransitions = convert_top toplist numtransition stack_symbols states [] in
       convert_transitions declarations subtransitions (newtransitions @ restransitions)
+;;
 
 (*If there are reject in one transition we need to add this one in set of stack
 to avoid some error with the checker.*)      
@@ -117,6 +123,7 @@ let rec change_declaration_in_function_of_reject (declarations: automate_declara
       change_declaration_in_function_of_reject declarations transitions []
     else
       change_declaration_in_function_of_reject declarations transitions subtransiotions_to_read 
+;;
 
 (*Convert instructions to automate.*)       
 let convert_prog_to_ast (automate: automate) : automate =
@@ -125,3 +132,4 @@ let convert_prog_to_ast (automate: automate) : automate =
     let newtransitions = convert_transitions declarations program_transitions [] in
     change_declaration_in_function_of_reject declarations newtransitions newtransitions 
   | _ -> automate  
+;;  

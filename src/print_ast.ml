@@ -15,8 +15,10 @@ let usage () =
   print_string "Program options : \n";
   print_string "./main -print <file> : displaying automaton in shell.\n";
   print_string "./main -eval <file> <mot> : evalutate automaton with a word.\n";
-  
+  print_string "./main -format--phase-1 : display the format of the phase 1 automaton files.\n";
+  print_string "./main -format--phase-3: display the format of the phase 3 automaton files.\n";
   print_string "\n"
+;;  
 
 (*Print automate declaration format.*)
 let automate_declaration_usage () =
@@ -27,6 +29,7 @@ let automate_declaration_usage () =
   print_string "initial state: <initial_state>\n";
   print_string "initial stack: <initial_stack>\n";
   print_string "\n"
+;;
 
 (*Print automate format.*)  
 let automate_usage () = 
@@ -38,6 +41,7 @@ let automate_usage () =
   print_string "(<current state>, <letter to read>, <current stack symbol>, <wanted state>, <other stacks symbols>)\n";
   print_string ((make_space 50 "") ^ ".\n" ^ (make_space 50 "") ^ ".\n" ^ (make_space 50 "") ^ ".\n");
   print_string "\n"
+;;  
 
 (*Print program format.*)  
 let program_usage () = 
@@ -57,6 +61,7 @@ let program_usage () =
   print_string ((make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n");
   print_string ((make_space 7 "") ^ "end\n");
   print_string "\n"
+;;
 
 (***********************************************************************)
 (*                              print_ast                              *)  
@@ -72,7 +77,7 @@ let rec print_transitions (transitions: automate_transition list) : unit =
     print_string (c ^ " " ^ d ^ " ");
     print_stringlist e 0;
     print_transitions sublist
-  ;;  
+;;  
 
 (*Print the automate declarations.*)  
 let print_declarations (declarations: automate_declarations) : unit = 
@@ -86,8 +91,7 @@ let print_declarations (declarations: automate_declarations) : unit =
     print_stringlist states 0;
     print_string ("Initial state : " ^ initial_state ^ "\n");
     print_string ("Initial stack : " ^ initial_stack ^ "\n\n")
-
-  ;;  
+;;  
 
 (*Print the automate.*)   
 let print_automate (automate: automate) : unit =
@@ -96,4 +100,5 @@ let print_automate (automate: automate) : unit =
     print_declarations declarations;
     print_string "transitions :\n\n";
     print_transitions transitions
-  | Program(_,_) -> ()     
+  | Program(_,_) -> () 
+;;    

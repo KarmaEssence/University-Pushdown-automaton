@@ -10,6 +10,7 @@ open Type
 let rec make_space (num: int) (res: string): string = 
   if num < 1 then res
   else make_space (num - 1) (res ^ " ")
+;;  
 
 
 (*Print the content of the list.*)
@@ -34,11 +35,12 @@ let rec print_stringlist (list : string list) (flag : int): unit =
         let to_print = element in
         print_string (to_print ^ " ");
         print_stringlist sublist flag
-      
+;;      
 
 (*Return the list without the last word.*)      
 let list_without_last_word (list : string list): string list = 
   List.rev (List.tl (List.rev list)) 
+;;  
   
 (*Clear the list from all digit (state).*)  
 let rec list_without_state (states: string list) (actions: string list) (newactions: string list): string list =
@@ -49,11 +51,13 @@ let rec list_without_state (states: string list) (actions: string list) (newacti
       list_without_state states subactions newactions
     else
       list_without_state states subactions (element :: newactions) 
+;;
 
 (*If the list is not empty, include the initial stack symbol at the begin of the list.*)      
 let rec add_stack_symbol (actions: string list) (stack_symbol: string) : string list = 
   if List.length actions > 0 then stack_symbol :: actions
-  else []     
+  else []
+;;       
   
 (*Sort the list in function of the initial stack symbol.*)  
 let rec initial_stack_priority (list: string list) (stack_symbol: string) (reslist: string list): string list = 
@@ -66,13 +70,16 @@ let rec initial_stack_priority (list: string list) (stack_symbol: string) (resli
       initial_stack_priority sublist stack_symbol (element :: stack_symbol :: reslist)
     else 
       initial_stack_priority sublist stack_symbol (element :: reslist)
+;;
 
 (*Allow to verify if all string of the list are a length superior or egal to one.*)      
 let string_has_one_char (symbols: string list): bool = List.for_all(fun x -> String.length x == 1 || x = "REJECT") symbols      
+;;
 
 (*Get only the first element from the list if this one exist, else return ""*)
 let get_string_from_list (list: string list): string =
   if List.length list == 0 then "" else List.hd list 
+;;
 
 (*Removes "REJECT" from the stack set.*)  
 let rec remove_reject_from_list (list: string list) (list_res: string list): string list = 
@@ -83,6 +90,7 @@ let rec remove_reject_from_list (list: string list) (list_res: string list): str
       remove_reject_from_list sub_list list_res
     else
       remove_reject_from_list sub_list (element :: list_res)
+;;
 
 (*Avoid to add reject in automate file (phase-1).*)      
 let leave_reject_from_automate (automate: automate): automate =
@@ -96,3 +104,4 @@ let leave_reject_from_automate (automate: automate): automate =
     let declarations = inputs_symbol, stack_symbol, states, initial_state, initial_stack in
     Automate(declarations, transitions) 
   | _ -> automate   
+;;  

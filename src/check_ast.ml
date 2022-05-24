@@ -23,6 +23,7 @@ let rec get_transition_conflict (transition_to_read: automate_transition) (trans
         (y_current_state, y_listletter_toread, y_stack_topop, y_wanted_state, y_actions)     
       else      
         get_transition_conflict transition_to_read subtransitions
+;;        
 
 (*Allow to verify if one transition of list is correct with other*)
 let rec check_list (transition_to_read: automate_transition) (transitions: automate_transition list): bool =
@@ -37,6 +38,7 @@ let rec check_list (transition_to_read: automate_transition) (transitions: autom
         false      
       else      
         check_list transition_to_read subtransitions
+;;
 
 (*Allow to verify if all transitions of list is correct with other*)        
 let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_transition list) 
@@ -56,6 +58,7 @@ let rec check_transitions_in_case_of_epsilon (transitions_to_read: automate_tran
       print_string "2) ";
       print_transitions [get_transition_conflict transition transitions];
       exit error_code                     
+;;
 
 (*Allow to verify if transitions have good format, else print accurately the error
 and exit the program.*)
@@ -91,6 +94,7 @@ let rec check_transitions (transitions: automate_transition list) (map: (string 
         let key = " " in
         let map = StringNameTable.add key [value] map in
         check_transitions subtransitions map
+;;
 
 (*Print the error with the transition which create this one.*)        
 let display_error_transition_data (declarations: automate_declarations) (transition: automate_transition) (flag: int): unit =
@@ -153,6 +157,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
       print_stringlist (get_symbols declarations 1) 3;
       print_string "]\n";
       exit error_code
+;;
 
 (*Check all symbol inside all transitions?*)      
 let rec check_transitions_data (declarations: automate_declarations) (transitions: automate_transition list): unit =
@@ -181,6 +186,7 @@ let rec check_transitions_data (declarations: automate_declarations) (transition
         display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 1
     else
       display_error_transition_data declarations (current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush) 0  
+;;
 
 (*Print accurately the error and exit the program in case of wrong format of declaration.*)
 let display_error_declaration_data (declarations: automate_declarations) (flag: int): unit =
@@ -219,6 +225,7 @@ let display_error_declaration_data (declarations: automate_declarations) (flag: 
       print_string ("]\nThe size of " ^ find_error ^ " must be one character (" 
       ^ find_error ^ " -> " ^ String.sub find_error 0 1 ^ ").\n");
       exit error_code    
+;;
 
 (*Allow to verify if declarations have good format, else print accurately the error
 and exit the program.*)
@@ -238,6 +245,7 @@ let check_declarations_data (declarations: automate_declarations): unit =
         display_error_declaration_data (input_symbols, stack_symbols, states, initial_state, initial_stack) 1
     else
       display_error_declaration_data (input_symbols, stack_symbols, states, initial_state, initial_stack) 0   
+;;
 
 (*Allow to verify if automate has good format, else print accurately the error
 and exit the program.*)
@@ -259,3 +267,4 @@ let check_automate (automate: automate): unit =
     let error_code = 1 in
     print_string "Error: options of phase 3 does'nt work with the file of phase 1.\n";
     exit error_code 
+;;
