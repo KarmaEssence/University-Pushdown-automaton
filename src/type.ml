@@ -33,9 +33,6 @@ type automate =
 | Automate of automate_declarations * automate_transition list 
 | Program of automate_declarations * program_transition list
 
-(*Char map.*)
-(*module ListStringNameTable = Map.Make(String list)*)
-
 (*String map*)
 module StringNameTable = Map.Make(String)
 

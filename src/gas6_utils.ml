@@ -85,13 +85,14 @@ let rec remove_reject_from_list (list: string list) (list_res: string list): str
       remove_reject_from_list sub_list (element :: list_res)
 
 (*Avoid to add reject in automate file (phase-1).*)      
-let leave_reject_from_automate (automate: automate): automate = 
-  let transitions = get_transitions_list automate in
-  let declarations = get_declaration automate in
-  let inputs_symbol = (get_symbols declarations 0) in
-  let stack_symbol = remove_reject_from_list (get_symbols declarations 2) [] in
-  let states = (get_symbols declarations 1) in
-  let initial_state = (get_initials declarations 0) in
-  let initial_stack = (get_initials declarations 1) in 
-  let declarations = inputs_symbol, stack_symbol, states, initial_state, initial_stack in
-  Automate(declarations, transitions)  
+let leave_reject_from_automate (automate: automate): automate =
+  match automate with
+  | Automate(declarations, transitions) -> 
+    let inputs_symbol = (get_symbols declarations 0) in
+    let stack_symbol = remove_reject_from_list (get_symbols declarations 2) [] in
+    let states = (get_symbols declarations 1) in
+    let initial_state = (get_initials declarations 0) in
+    let initial_stack = (get_initials declarations 1) in 
+    let declarations = inputs_symbol, stack_symbol, states, initial_state, initial_stack in
+    Automate(declarations, transitions) 
+  | _ -> automate   

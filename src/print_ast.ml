@@ -13,10 +13,9 @@ open Gas6_utils
 let usage () =
   print_string "\n";
   print_string "Program options : \n";
-  print_string "./main -eval--phase-1 <file> <mot> : évalutation de l'automate à l'aide d'un mot\n";
-  print_string "./main -eval--phase-3 <file> <mot> : évalutation du programme à l'aide d'un mot\n";
-  print_string "./main -print--phase-1 <file> : affichage de l'automate dans le terminal\n";
-  print_string "./main -print--phase-3 <file> : affichage du programme dans le terminal\n";
+  print_string "./main -print <file> : displaying automaton in shell.\n";
+  print_string "./main -eval <file> <mot> : evalutate automaton with a word.\n";
+  
   print_string "\n"
 
 (*Print automate declaration format.*)

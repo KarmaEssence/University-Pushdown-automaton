@@ -119,8 +119,9 @@ let rec change_declaration_in_function_of_reject (declarations: automate_declara
       change_declaration_in_function_of_reject declarations transitions subtransiotions_to_read 
 
 (*Convert instructions to automate.*)       
-let convert_prog_to_ast (program: automate) : automate =
-  let declarations = get_declaration program in
-  let program_transitions = get_program_transitions_list program in
-  let newtransitions = convert_transitions declarations program_transitions [] in
-  change_declaration_in_function_of_reject declarations newtransitions newtransitions 
+let convert_prog_to_ast (automate: automate) : automate =
+  match automate with
+  | Program(declarations, program_transitions) -> 
+    let newtransitions = convert_transitions declarations program_transitions [] in
+    change_declaration_in_function_of_reject declarations newtransitions newtransitions 
+  | _ -> automate  
