@@ -22,20 +22,48 @@ let rec print_stringlist (list : string list) (flag : int): unit =
     else
       print_string ""  
   | element :: sublist -> 
-      if flag = 3 then
+      if flag >= 3 then
         if List.length sublist = 0 then
           let to_print = element in
           print_string (to_print);
           print_stringlist sublist flag
         else  
-          let to_print = element in
-          print_string (to_print ^ ",");
-          print_stringlist sublist flag
+          if flag = 3 then
+            let to_print = element in
+            print_string (to_print ^ ",");
+            print_stringlist sublist flag
+          else
+            let to_print = element in
+            print_string (to_print ^ ";");
+            print_stringlist sublist flag 
       else  
+        if List.length sublist = 0 then
+          let to_print = element in
+          print_string (to_print);
+          print_stringlist sublist flag
+        else 
+          let to_print = element in
+          print_string (to_print ^ " ");
+          print_stringlist sublist flag
+;; 
+
+let rec print_special_string_list (list: string list) (iteration: int): unit =
+  match list with 
+  | [] -> () 
+  | element :: sub_list ->
+    if List.length sub_list > 0 then
+      if iteration > 0 then
         let to_print = element in
-        print_string (to_print ^ " ");
-        print_stringlist sublist flag
-;;      
+        print_string (to_print ^ ",");
+        print_special_string_list sub_list (iteration-1)
+      else 
+        let to_print = element in
+        print_string (to_print ^ ";");
+        print_special_string_list sub_list 0  
+    else
+      let to_print = element in
+      print_string (to_print);
+      print_special_string_list [] 0   
 
 (*Return the list without the last word.*)      
 let list_without_last_word (list : string list): string list = 

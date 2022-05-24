@@ -77,9 +77,9 @@ let rec check_transitions (transitions: automate_transition list) (map: (string 
         print_string "Reason: There are two transitions for a same letter and a same symbol in the top of the stack.\n\n";
         print_string "1) ";
         print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
-        print_string "2) ";
-        print_stringlist (List.find (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word) 0;
-        print_string "\n";
+        print_string "2) (";
+        print_special_string_list (List.find (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word) 3;
+        print_string ")\n";
         exit error_code
       else
         let list_of_word = List.rev(value :: List.rev list_of_word) in
@@ -138,7 +138,7 @@ let display_error_transition_data (declarations: automate_declarations) (transit
           print_string "Error: in transition: ";
           print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
           print_string ("The length of letter to read [");
-          print_stringlist listletter_toread 3;
+          print_stringlist listletter_toread 2;
           print_string ("] must be one or zero (Choose between : " ^ List.hd listletter_toread ^ " or nothing)\n");
           exit error_code       
       else 

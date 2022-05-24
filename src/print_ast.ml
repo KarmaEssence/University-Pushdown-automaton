@@ -72,10 +72,11 @@ let rec print_transitions (transitions: automate_transition list) : unit =
   match transitions with
   | [] -> print_string "\n"
   | (a, b, c, d, e) :: sublist ->
-    print_string (a ^ " ");
-    print_stringlist b 1;
-    print_string (c ^ " " ^ d ^ " ");
-    print_stringlist e 0;
+    print_string ("(" ^ a ^ ",");
+    print_stringlist b 2;
+    print_string ("," ^ c ^ "," ^ d ^ ",");
+    print_stringlist e 4;
+    print_string ")\n";
     print_transitions sublist
 ;;  
 
@@ -84,12 +85,12 @@ let print_declarations (declarations: automate_declarations) : unit =
   match declarations with
   | (input_symbols, stack_symbols, states, initial_state, initial_stack) ->
     print_string "Input symbols : ";
-    print_stringlist input_symbols 0; 
-    print_string "Stack symbols : ";
-    print_stringlist stack_symbols 0;
-    print_string "States : ";
-    print_stringlist states 0;
-    print_string ("Initial state : " ^ initial_state ^ "\n");
+    print_stringlist input_symbols 3; 
+    print_string "\nStack symbols : ";
+    print_stringlist stack_symbols 3;
+    print_string "\nStates : ";
+    print_stringlist states 3;
+    print_string ("\nInitial state : " ^ initial_state ^ "\n");
     print_string ("Initial stack : " ^ initial_stack ^ "\n\n")
 ;;  
 
