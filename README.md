@@ -17,11 +17,11 @@
 
    - evaluation of automaton : 
 
-            ./main -eval--phase-<1 or 3> <file> <word>
+            ./main -eval <file> <word>
    
    - printing of automaton : 
    
-            ./main -print--phase-<1 or 3> <file>
+            ./main -print <file>
 
    - printing the format of automaton file:
 
