@@ -47,6 +47,7 @@ let rec print_stringlist (list : string list) (flag : int): unit =
           print_stringlist sublist flag
 ;; 
 
+(*To print string list in case of deterministic error.*)
 let rec print_special_string_list (list: string list) (iteration: int): unit =
   match list with 
   | [] -> () 
@@ -63,7 +64,8 @@ let rec print_special_string_list (list: string list) (iteration: int): unit =
     else
       let to_print = element in
       print_string (to_print);
-      print_special_string_list [] 0   
+      print_special_string_list [] 0  
+;;       
 
 (*Return the list without the last word.*)      
 let list_without_last_word (list : string list): string list = 
