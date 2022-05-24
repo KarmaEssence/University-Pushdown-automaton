@@ -45,7 +45,7 @@ initial_stack:
 INITIAL STACK COLON a = ID {a}
 
 automate_transitions:
-ID COLON a = list(automate_transition) {a}
+ID COLON a = nonempty_list(automate_transition) {a}
 
 automate_transition:
 LPAREN a = ID COMMA b = list(ID) COMMA c = ID COMMA d = ID COMMA e = separated_list(SEMICOLON, ID) RPAREN {a, b, c, d, e}

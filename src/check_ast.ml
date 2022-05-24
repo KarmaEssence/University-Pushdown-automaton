@@ -246,7 +246,7 @@ let check_automate (automate: automate): unit =
   | Automate(declarations, transitions) ->
     if List.length transitions == 0 then
       let error_code = 1 in
-      print_string "Error: You choose a wrong option for a selected file.\n";
+      print_string "Error: options of phase 1 does'nt work with the file of phase 3.\n";
       exit error_code 
     else
       check_declarations_data declarations;
@@ -257,5 +257,5 @@ let check_automate (automate: automate): unit =
       
   | Program(_,_) -> 
     let error_code = 1 in
-    print_string "Error: You choose a wrong option for a selected file.\n";
+    print_string "Error: options of phase 3 does'nt work with the file of phase 1.\n";
     exit error_code 

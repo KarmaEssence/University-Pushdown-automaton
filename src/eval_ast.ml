@@ -17,7 +17,7 @@ let print_actual_position (word: string) (map: string list StringNameTable.t): u
   print_string "Current state: ";
   let list_of_states = StringNameTable.find "states" map in
   print_string (List.nth list_of_states ((List.length list_of_states)-1) ^ "\n");
-  print_string "Stack elements : ";
+  print_string "Stack elements: ";
   print_stringlist (StringNameTable.find "stacks" map) 0;
   print_string "\n"
   
@@ -32,7 +32,7 @@ let display_reject_error (transition: automate_transition): unit =
   print_string "Analysis Error: in transition: ";
   print_transitions [transition];
   print_string "Reason : There are a REJECT in list of stack to push\n";
-  print_string "Info: the Word hasn't been successfull analysed!\n"
+  print_string "Info: the word hasn't been successfull analysed!\n"
 
 (*Test an automate with an char, return a char map if the run has succeed,
 else print a message and terminate the execution.*)
@@ -41,7 +41,7 @@ let rec test_automate_with_char (transitions: automate_transition list)
   match (transitions) with
   | [] -> 
       let error_code = 1 in
-      print_string ("Error: none transition can be apply for the letter " ^ element ^ ".\n");
+      print_string ("Error: none transition can't be applied for the letter " ^ element ^ ".\n");
       exit error_code 
   | transition :: subtransitions ->
     match transition with
@@ -95,7 +95,7 @@ let rec test_automate_with_word (automate: automate) (map: string list StringNam
     if List.length (StringNameTable.find "stacks" map) > 0 then
       print_string "Error: the entry is exhausting without that the stack is empty.\n" 
     else   
-      print_string "Info: the Word has been successfull analysed!\n"
+      print_string "Info: the word has been successfull analysed!\n"
 
 (*To evaluate an automate.*)      
 let eval_automate (automate: automate) (word: string): unit = 
