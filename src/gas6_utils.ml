@@ -1,4 +1,8 @@
 (***********************************************************************)
+
+open Type
+
+(***********************************************************************)
 (*                             gas6_utils                              *)  
 (***********************************************************************)
 
@@ -64,8 +68,30 @@ let rec initial_stack_priority (list: string list) (stack_symbol: string) (resli
       initial_stack_priority sublist stack_symbol (element :: reslist)
 
 (*Allow to verify if all string of the list are a length superior or egal to one.*)      
-let string_has_one_char (symbols: string list): bool = List.for_all(fun x -> String.length x == 1) symbols      
+let string_has_one_char (symbols: string list): bool = List.for_all(fun x -> String.length x == 1 || x = "REJECT") symbols      
 
 (*Get only the first element from the list if this one exist, else return ""*)
 let get_string_from_list (list: string list): string =
   if List.length list == 0 then "" else List.hd list 
+
+(*Removes "REJECT" from the stack set.*)  
+let rec remove_reject_from_list (list: string list) (list_res: string list): string list = 
+  match list with
+  | [] -> List.rev list_res
+  | element :: sub_list ->
+    if element = "REJECT" then
+      remove_reject_from_list sub_list list_res
+    else
+      remove_reject_from_list sub_list (element :: list_res)
+
+(*Avoid to add reject in automate file (phase-1).*)      
+let leave_reject_from_automate (automate: automate): automate = 
+  let transitions = get_transitions_list automate in
+  let declarations = get_declaration automate in
+  let inputs_symbol = (get_symbols declarations 0) in
+  let stack_symbol = remove_reject_from_list (get_symbols declarations 2) [] in
+  let states = (get_symbols declarations 1) in
+  let initial_state = (get_initials declarations 0) in
+  let initial_stack = (get_initials declarations 1) in 
+  let declarations = inputs_symbol, stack_symbol, states, initial_state, initial_stack in
+  Automate(declarations, transitions)  

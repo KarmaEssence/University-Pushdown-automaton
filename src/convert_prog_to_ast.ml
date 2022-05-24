@@ -39,8 +39,10 @@ let rec convert_actions (actionslist: program_action list) (stackslist: string l
       let newstackslist = state :: stackslist in
       convert_actions subactionslist newstackslist
     | Reject ->
-      print_string "Info : End of analysis.\n";
-      exit 1
+      let newstackslist = "REJECT" :: stackslist in
+      convert_actions subactionslist newstackslist
+      (*print_string "Info : End of analysis.\n";
+      exit 1*)
 
 (*Convert next instruction to automate actions per letter has readed.*)
 let rec convert_next (nextlist: program_next list) (numtransition: string) (stack_symbol: string)
@@ -81,8 +83,8 @@ let rec convert_top (toplist: program_top list) (numtransition: string) (stack_s
       convert_top subtoplist numtransition stack_symbols states (newtransitions @ [transitions])
     | Nexts(stack_symbol, nextlist) ->
       let transitions = convert_next nextlist numtransition stack_symbol states [] in 
-      convert_top subtoplist numtransition stack_symbols states (newtransitions @ transitions) 
-
+      convert_top subtoplist numtransition stack_symbols states (newtransitions @ transitions)
+            
 (*Convert instructions to automate transitions.*)      
 let rec convert_transitions (declarations: automate_declarations) (transitions: program_transition list)
  (newtransitions: automate_transition list) : automate_transition list = 
@@ -100,9 +102,27 @@ let rec convert_transitions (declarations: automate_declarations) (transitions: 
       let restransitions = convert_top toplist numtransition stack_symbols states [] in
       convert_transitions declarations subtransitions (newtransitions @ restransitions)
 
+(*If there are reject in one transition we need to add this one in set of stack
+to avoid some error with the checker.*)      
+let rec change_declaration_in_function_of_reject (declarations: automate_declarations)
+ (transitions: automate_transition list) (transitions_to_read: automate_transition list): automate = 
+  match transitions_to_read with
+  | [] -> Automate(declarations, transitions)
+  | (current_state, listletter_toread, stack_topop, state_wanted, list_stack_topush) :: subtransiotions_to_read ->
+    if List.mem "REJECT" list_stack_topush then
+      let inputs_symbol = (get_symbols declarations 0) in
+      let stack_symbol = (List.rev ("REJECT" :: List.rev (get_symbols declarations 2))) in
+      let states = (get_symbols declarations 1) in
+      let initial_state = (get_initials declarations 0) in
+      let initial_stack = (get_initials declarations 1) in
+      let declarations = inputs_symbol, stack_symbol, states, initial_state, initial_stack in
+      change_declaration_in_function_of_reject declarations transitions []
+    else
+      change_declaration_in_function_of_reject declarations transitions subtransiotions_to_read 
+
 (*Convert instructions to automate.*)       
 let convert_prog_to_ast (program: automate) : automate =
   let declarations = get_declaration program in
   let program_transitions = get_program_transitions_list program in
   let newtransitions = convert_transitions declarations program_transitions [] in
-  Automate(declarations, newtransitions)
+  change_declaration_in_function_of_reject declarations newtransitions newtransitions 

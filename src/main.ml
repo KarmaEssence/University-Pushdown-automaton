@@ -11,7 +11,8 @@ open Type
 (*To get automate from the file.*) 
 let get_automation_in_file (lexbuf: Lexing.lexbuf) (flag: int): automate = 
   if flag = 0 then
-    Parser.input Lexer.main lexbuf
+    let automate = Parser.input Lexer.main lexbuf in
+    Gas6_utils.leave_reject_from_automate automate
   else
     let program = Parser.input Lexer.main lexbuf in 
     Convert_prog_to_ast.convert_prog_to_ast program    
