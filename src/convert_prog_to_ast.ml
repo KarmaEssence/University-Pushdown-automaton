@@ -41,8 +41,6 @@ let rec convert_actions (actionslist: program_action list) (stackslist: string l
     | Reject ->
       let newstackslist = "REJECT" :: stackslist in
       convert_actions subactionslist newstackslist
-      (*print_string "Info : End of analysis.\n";
-      exit 1*)
 
 (*Convert next instruction to automate actions per letter has readed.*)
 let rec convert_next (nextlist: program_next list) (numtransition: string) (stack_symbol: string)

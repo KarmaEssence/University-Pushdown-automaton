@@ -1,6 +1,7 @@
 (*****************************************************************************)
 
 open Type
+open Print_ast
 open Gas6_utils
 
 (*****************************************************************************)
@@ -26,6 +27,13 @@ let update_map (list_of_states: string list) (list_of_stacks: string list)
   let map = StringNameTable.add "states" list_of_states map in
   StringNameTable.add "stacks" list_of_stacks map   
 
+(*Display an error when "REJECT" is in stack list to push.*)  
+let display_reject_error (transition: automate_transition): unit = 
+  print_string "Analysis Error: in transition: ";
+  print_transitions [transition];
+  print_string "Reason : There are a REJECT in list of stack to push\n";
+  print_string "Info: the Word hasn't been successfull analysed!\n"
+
 (*Test an automate with an char, return a char map if the run has succeed,
 else print a message and terminate the execution.*)
 let rec test_automate_with_char (transitions: automate_transition list)
@@ -49,10 +57,20 @@ let rec test_automate_with_char (transitions: automate_transition list)
           let list_of_states = List.rev(state_wanted :: List.rev list_of_states) in
           if List.length list_stack_topush > 0 then
             if List.length list_stack_topush > 1 then
-              let list_of_stacks = list_of_stacks @ (List.tl list_stack_topush) in
-              update_map list_of_states list_of_stacks map
+              if List.mem "REJECT" list_stack_topush then
+                let errcode = 1 in
+                display_reject_error transition;
+                exit errcode
+              else  
+                let list_of_stacks = list_of_stacks @ (List.tl list_stack_topush) in
+                update_map list_of_states list_of_stacks map
             else 
-              update_map list_of_states list_of_stacks map  
+              if List.mem "REJECT" list_stack_topush then
+                let errcode = 1 in
+                display_reject_error transition;
+                exit errcode
+              else  
+                update_map list_of_states list_of_stacks map  
           else  
             let list_of_stacks = list_without_last_word list_of_stacks in
             update_map list_of_states list_of_stacks map
