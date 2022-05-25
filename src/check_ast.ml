@@ -79,7 +79,7 @@ let rec check_transitions (transitions: automate_transition list) (map: (string 
         print_transitions [(current_state, listletter_toread, stack_topop, wanted_state, list_stack_topush)];
         print_string "2) (";
         print_special_string_list (List.find (fun x-> (List.nth x 0) = (List.nth value 0) && (List.nth x 2) = (List.nth value 2)) list_of_word) 3;
-        print_string ")\n";
+        print_string ")\n\n";
         exit error_code
       else
         let list_of_word = List.rev(value :: List.rev list_of_word) in
@@ -252,19 +252,11 @@ and exit the program.*)
 let check_automate (automate: automate): unit = 
   match automate with
   | Automate(declarations, transitions) ->
-    if List.length transitions == 0 then
-      let error_code = 1 in
-      print_string "Error: options of phase 1 does'nt work with the file of phase 3.\n";
-      exit error_code 
-    else
-      check_declarations_data declarations;
-      check_transitions_data declarations transitions;
-      let map = StringNameTable.empty in
-      check_transitions transitions map; 
-      check_transitions_in_case_of_epsilon transitions transitions
+    check_declarations_data declarations;
+    check_transitions_data declarations transitions;
+    let map = StringNameTable.empty in
+    check_transitions transitions map; 
+    check_transitions_in_case_of_epsilon transitions transitions
       
-  | Program(_,_) -> 
-    let error_code = 1 in
-    print_string "Error: options of phase 3 does'nt work with the file of phase 1.\n";
-    exit error_code 
+  | Program(_,_) -> ()
 ;;
