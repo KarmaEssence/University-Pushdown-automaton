@@ -6,7 +6,7 @@ open Gas6_utils
 (*****************************************************************************)
 
 (***********************************************************************)
-(*                          convert_prog_to_ast                        *)  
+(*                          convert_prog_to_auto                       *)  
 (***********************************************************************)
 
 (*Get the new state of the automate in actions list (if this one exist).*)
@@ -126,7 +126,7 @@ let rec change_declaration_in_function_of_reject (declarations: automate_declara
 ;;
 
 (*Convert instructions to automate.*)       
-let convert_prog_to_ast (automate: automate) : automate =
+let convert_prog_to_auto (automate: automate) : automate =
   match automate with
   | Program(declarations, program_transitions) -> 
     let newtransitions = convert_transitions declarations program_transitions [] in

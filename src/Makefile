@@ -3,8 +3,8 @@ MENHIR=menhir
 OCAMLC=ocamlc
 OCAMLLEX=ocamllex
 
-SOURCES = type.ml gas6_utils.ml print_ast.ml check_ast.ml eval_ast.ml\
-convert_prog_to_ast.ml lexer.ml parser.ml main.ml
+SOURCES = type.ml gas6_utils.ml print_auto.ml check_auto.ml eval_auto.ml\
+convert_prog_to_auto.ml lexer.ml parser.ml main.ml
 
 OBJECTS = $(SOURCES:.ml=.cmo)
 
@@ -12,9 +12,9 @@ OBJECTS = $(SOURCES:.ml=.cmo)
 
 all: main
 
-main: type.cmo gas6_utils.cmo print_ast.cmi print_ast.cmo\
-check_ast.cmi check_ast.cmo eval_ast.cmi eval_ast.cmo\
-convert_prog_to_ast.cmi convert_prog_to_ast.cmo lexer.cmo parser.cmi parser.cmo\
+main: type.cmo gas6_utils.cmo print_auto.cmi print_auto.cmo\
+check_auto.cmi check_auto.cmo eval_auto.cmi eval_auto.cmo\
+convert_prog_to_auto.cmi convert_prog_to_auto.cmo lexer.cmo parser.cmi parser.cmo\
 main.cmo 
 	$(OCAMLC) -o $@ $(OBJECTS)
 

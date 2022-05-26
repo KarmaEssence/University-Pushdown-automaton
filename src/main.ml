@@ -13,7 +13,7 @@ let get_automation_in_file (lexbuf: Lexing.lexbuf): automate =
   try
     let automate = Parser.input Lexer.main lexbuf in
     let automate = Gas6_utils.leave_reject_from_automate automate in
-    Convert_prog_to_ast.convert_prog_to_ast automate
+    Convert_prog_to_auto.convert_prog_to_auto automate
 
   with exn_Parser_MenhirBasics_Error ->
     print_string "Error: wrong format of file.\n";
@@ -25,7 +25,7 @@ let open_automaton_file (filename: string): automate =
   try
     let lexbuf = Lexing.from_channel (open_in filename) in
     let automaton = get_automation_in_file lexbuf in  
-    Check_ast.check_automate automaton;
+    Check_auto.check_automate automaton;
     automaton
 
   with Sys_error _ ->
@@ -37,15 +37,15 @@ let _ =
   match Sys.argv with
   | [|_;"-print";filename|] ->  
     let automate = open_automaton_file filename in
-    Print_ast.print_automate automate   
+    Print_auto.print_automate automate   
   | [|_;"-eval";filename;argument|] ->
     let automate = open_automaton_file filename in
-    Eval_ast.eval_automate automate argument
+    Eval_auto.eval_automate automate argument
   | [|_;"-eval";filename|] ->
     let automate = open_automaton_file filename in
     print_string "Enter a word:\n";
-    Eval_ast.eval_automate automate (read_line ())       
-  | [|_;"-format--phase-1"|] -> Print_ast.automate_usage ()
-  | [|_;"-format--phase-3"|] -> Print_ast.program_usage ()
-  | _ -> Print_ast.usage ()
+    Eval_auto.eval_automate automate (read_line ())       
+  | [|_;"-format--phase-1"|] -> Print_auto.automate_usage ()
+  | [|_;"-format--phase-3"|] -> Print_auto.program_usage ()
+  | _ -> Print_auto.usage ()
 ;;  
