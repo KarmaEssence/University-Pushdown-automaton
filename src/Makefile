@@ -14,8 +14,8 @@ all: main
 
 main: type.cmo gas6_utils.cmo print_ast.cmi print_ast.cmo\
 check_ast.cmi check_ast.cmo eval_ast.cmi eval_ast.cmo\
-convert_prog_to_ast.cmi convert_prog_to_ast.cmo parser.cmo parser.cmi\
-lexer.cmo main.cmo 
+convert_prog_to_ast.cmi convert_prog_to_ast.cmo lexer.cmo parser.cmo parser.cmi\
+main.cmo 
 	$(OCAMLC) -o $@ $(OBJECTS)
 
 %.cmo: %.ml
@@ -33,7 +33,7 @@ lexer.cmo main.cmo
 
 parser.mly: type.ml
 
-lexer.mll: parser.mly
+lexer.mll: parser.ml
 
 clean:
 	rm -fr parser.mli parser.ml \
