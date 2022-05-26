@@ -9,7 +9,7 @@ open Type
 %token<string> ID 
 
 %start<Type.automate> input
-%type<automate> automate
+%type<Type.automate> automate
 %type<Type.automate_declarations> automate_declarations
 %type<string list> input_symbols stack_symbols states
 %type<string> initial_state initial_stack
