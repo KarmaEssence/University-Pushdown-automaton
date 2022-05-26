@@ -135,3 +135,17 @@ let leave_reject_from_automate (automate: automate): automate =
     Automate(declarations, transitions) 
   | _ -> automate   
 ;;  
+
+(*Return 0 if is epsilon transition, 1 to transition which match with the character,
+else 2*)
+let can_read_transition_or_not (listletter_toread: string list) (element: string): int = 
+  if List.length listletter_toread = 0 then 0 
+  else if List.length listletter_toread > 0 && element = List.hd listletter_toread then 1
+  else 2 
+;;
+
+(*Select char in function of string length.*)
+let select_char_to_read (word: string): string =
+  if String.length word < 1 then ""
+  else String.sub word 0 1 
+;; 

@@ -36,6 +36,8 @@ type automate =
 (*String map*)
 module StringNameTable = Map.Make(String)
 
+type transition_epsilon_has_applied = int * string list StringNameTable.t 
+
 (*To get declarations field from automate.*)
 let get_declaration (automate: automate): automate_declarations = 
   match automate with

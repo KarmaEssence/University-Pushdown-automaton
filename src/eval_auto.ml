@@ -24,9 +24,10 @@ let print_actual_position (word: string) (map: string list StringNameTable.t): u
   
 (*Updating of the map.*)  
 let update_map (list_of_states: string list) (list_of_stacks: string list) 
-(map: string list StringNameTable.t): string list StringNameTable.t = 
+(read_transition: int) (map: string list StringNameTable.t)
+: transition_epsilon_has_applied = 
   let map = StringNameTable.add "states" list_of_states map in
-  StringNameTable.add "stacks" list_of_stacks map
+  (read_transition, StringNameTable.add "stacks" list_of_stacks map)
 ;;     
 
 (*Display an error when "REJECT" is in stack list to push.*)  
@@ -40,7 +41,7 @@ let display_reject_error (transition: automate_transition): unit =
 (*Test an automate with an char, return a char map if the run has succeed,
 else print a message and terminate the execution.*)
 let rec test_automate_with_char (transitions: automate_transition list)
- (map: string list StringNameTable.t) (element: string): string list StringNameTable.t =
+ (map: string list StringNameTable.t) (element: string): transition_epsilon_has_applied =
   match (transitions) with
   | [] -> 
       let error_code = 1 in
@@ -51,11 +52,10 @@ let rec test_automate_with_char (transitions: automate_transition list)
     | (current_state, listletter_toread, stack_topop, state_wanted, list_stack_topush) ->
       let list_of_states = StringNameTable.find "states" map in
       let list_of_stacks = StringNameTable.find "stacks" map in
-      
+      let can_read_transition = can_read_transition_or_not listletter_toread element in
       if List.hd (List.rev list_of_states) = current_state &&
          List.hd (List.rev list_of_stacks) = stack_topop && 
-         ((List.length listletter_toread = 0  && element = " ") || 
-         (List.length listletter_toread > 0 && element = List.hd listletter_toread)) then
+        (can_read_transition = 0 || can_read_transition = 1) then
           
           let list_of_states = List.rev(state_wanted :: List.rev list_of_states) in
           if List.length list_stack_topush > 0 then
@@ -66,17 +66,17 @@ let rec test_automate_with_char (transitions: automate_transition list)
                 exit errcode
               else  
                 let list_of_stacks = list_of_stacks @ (List.tl list_stack_topush) in
-                update_map list_of_states list_of_stacks map
+                update_map list_of_states list_of_stacks can_read_transition map
             else 
               if List.mem "REJECT" list_stack_topush then
                 let errcode = 1 in
                 display_reject_error transition;
                 exit errcode
               else  
-                update_map list_of_states list_of_stacks map  
+                update_map list_of_states list_of_stacks can_read_transition map  
           else  
             let list_of_stacks = list_without_last_word list_of_stacks in
-            update_map list_of_states list_of_stacks map
+            update_map list_of_states list_of_stacks can_read_transition map
             
 
       else
@@ -92,12 +92,19 @@ let rec test_automate_with_word (automate: automate) (map: string list StringNam
     if List.length (StringNameTable.find "stacks" map) < 1 then
       print_string "Error: the stack is empty without that the entry was exhausted.\n"  
     else
-      let subword = String.sub word 1 ((String.length word)-1) in
-      let map = test_automate_with_char (get_transitions_list automate) map (String.sub word 0 1) in
-      test_automate_with_word automate map subword
+      let (read_transition,map) = test_automate_with_char (get_transitions_list automate) map (select_char_to_read word) in
+      if read_transition = 0 then
+        test_automate_with_word automate map word
+      else  
+        let subword = String.sub word 1 ((String.length word)-1) in
+        test_automate_with_word automate map subword
   else
     if List.length (StringNameTable.find "stacks" map) > 0 then
-      print_string "Error: the entry is exhausting without that the stack is empty.\n" 
+      let (read_transition,map) = test_automate_with_char (get_transitions_list automate) map (select_char_to_read word) in
+      if read_transition = 0 then
+        test_automate_with_word automate map word
+      else  
+        print_string "Error: the entry is exhausting without that the stack is empty.\n" 
     else   
       print_string "Info: the word has been successfull analysed!\n"
 ;;
