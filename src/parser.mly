@@ -8,15 +8,15 @@ open Type
 %token PUSH POP CHANGE REJECT
 %token<string> ID 
 
-%start<automate> input
+%start<Type.automate> input
 %type<automate> automate
-%type<automate_declarations> automate_declarations
+%type<Type.automate_declarations> automate_declarations
 %type<string list> input_symbols stack_symbols states
 %type<string> initial_state initial_stack
-%type<automate_transition list> automate_transitions
-%type<automate_transition> automate_transition
-%type<program_transition list> program_transitions
-%type<program_transition> program_transition
+%type<Type.automate_transition list> automate_transitions
+%type<Type.automate_transition> automate_transition
+%type<Type.program_transition list> program_transitions
+%type<Type.program_transition> program_transition
 
 %%
 
