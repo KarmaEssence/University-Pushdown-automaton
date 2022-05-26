@@ -35,3 +35,4 @@ _opam/
 
 #generated ml files
 parser.ml
+parser.mli
