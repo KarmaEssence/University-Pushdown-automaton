@@ -44,8 +44,12 @@ let _ =
   | [|_;"-eval";filename|] ->
     let automate = open_automaton_file filename in
     print_string "Enter a word:\n";
-    Eval_auto.eval_automate automate (read_line ())       
+    Eval_auto.eval_automate automate (read_line ())
   | [|_;"-format--phase-1"|] -> Print_auto.automate_usage ()
   | [|_;"-format--phase-3"|] -> Print_auto.program_usage ()
+  | [|_;filename|] ->    
+    let automate = open_automaton_file filename in
+    print_string "Enter a word:\n";
+    Eval_auto.eval_automate automate (read_line ())
   | _ -> Print_auto.usage ()
 ;;  

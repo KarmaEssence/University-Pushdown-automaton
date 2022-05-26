@@ -14,7 +14,9 @@ let usage () =
   print_string "\n";
   print_string "Program options : \n";
   print_string "./main -print <file> : displaying automaton in shell.\n";
-  print_string "./main -eval <file> <mot> : evalutate automaton with a word.\n";
+  print_string "./main -eval <file> <mot> : evaluate automaton with a word.\n";
+  print_string "./main -eval <file> : evaluate automaton with a word.\n";
+  print_string "./main <file> : evaluate automaton with a word.\n";
   print_string "./main -format--phase-1 : display the format of the phase 1 automaton files.\n";
   print_string "./main -format--phase-3: display the format of the phase 3 automaton files.\n";
   print_string "\n"
@@ -52,7 +54,7 @@ let program_usage () =
   print_string ((make_space 2 "") ^ "case state of\n");
   print_string ((make_space 4 "") ^ "1: begin\n ");
   print_string ((make_space 7 "") ^ "case next of\n");
-  print_string ((make_space 9 "") ^ "a: <actions> end\n");
+  print_string ((make_space 9 "") ^ "a: <actions>\n");
   print_string ((make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n" ^ (make_space 9 "") ^ ".\n");
   print_string ((make_space 7 "") ^ "end\n");
   print_string ((make_space 4 "") ^ "2: begin\n ");

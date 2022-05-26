@@ -1,4 +1,4 @@
-# University-Pushdown-automaton
+# GASP2
 
 
 ## Compilation and Execution
@@ -18,6 +18,14 @@
    - evaluation of automaton : 
 
             ./main -eval <file> <word>
+
+   - Alternatively you can do :
+
+            ./main -eval <file>
+
+   - Or :  
+
+            ./main <file>       
    
    - printing of automaton : 
    
